@@ -17,7 +17,7 @@ const Certificates: FC<TerminologyProps> = () => {
       {isSuccess && data.eligible && <PDFViewer width="100%" height="100%">
         <MyDocument data={data.qr} trackedEntityInstance={data.trackedEntityInstance} attributeData={data.attributes} eventData={data.events} />
       </PDFViewer>}
-      {isSuccess && !data.eligible && <Box  fontSize="4xl">No certificate or not eligible for certificate</Box>}
+      {isSuccess && !data.eligible && <Box  fontSize="4xl">{data.message}</Box>}
       {isError && <Box>{error?.message}</Box>}
     </Flex>
   )

@@ -1,7 +1,8 @@
 import axios from 'axios';
-import { fromPairs } from 'lodash';
+import { fromPairs, max } from 'lodash';
 import { useQuery } from "react-query";
-import QRCode from 'qrcode'
+import QRCode from 'qrcode';
+import { parseISO, differenceInDays } from 'date-fns'
 
 // Production
 export const PROGRAM = 'yDuAzyqYABS';
@@ -27,24 +28,37 @@ export const api = axios.create({
   auth: { username: 'admin', password: 'District#9' }
 });
 
-const processTrackedEntityInstances = async (trackedEntityInstances: any) => {
+const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN: boolean = true) => {
   let results: any = {};
   const [{ attributes, enrollments, trackedEntityInstance }] = trackedEntityInstances;
 
-  results = { attributes: fromPairs(attributes.map((a: any) => [a.attribute, a.value])), trackedEntityInstance };
+  let processedAttributes = fromPairs(attributes.map((a: any) => [a.attribute, a.value]));
 
+  if (byNIN) {
+    processedAttributes = { ...processedAttributes, idLabel: 'NIN', idValue: processedAttributes[NIN_ATTRIBUTE] }
+  } else {
+    processedAttributes = { ...processedAttributes, idLabel: 'ID', idValue: processedAttributes[OTHER_ID] }
+  }
+
+  results = { attributes: processedAttributes, trackedEntityInstance };
 
   const programEnrollment = enrollments.find((en: any) => en.program === PROGRAM)
   if (programEnrollment) {
     const processedEvents = programEnrollment.events.filter((event: any) => !!event.eventDate && event.programStage === PROGRAM_STAGE).map(({ dataValues, ...others }: any) => {
       return { ...others, ...fromPairs(dataValues.map((dv: any) => [dv.dataElement, dv.value])) }
     });
-    results = { ...results, events: processedEvents }
-
-    const qr = await QRCode.toDataURL(`Name:${results.attributes[NAME_ATTRIBUTE]}\nNIN:${results.attributes[NIN_ATTRIBUTE]}\nSex:${results.attributes[SEX_ATTRIBUTE]}\nDOB:${results.attributes[DOB_ATTRIBUTE]}\nPHONE:${results.attributes[PHONE_ATTRIBUTE]}\n${processedEvents[0].bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(processedEvents[0].eventDate))},${processedEvents[0].orgUnitName}\n${processedEvents[1].bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(processedEvents[1].eventDate))},${processedEvents[1].orgUnitName}\n\nClick to verify\nhttps://epivac.health.go.ug/certificates/#/validate/${trackedEntityInstance}`, { margin: 0 });
 
     if (processedEvents.length >= 2) {
-      results = { ...results, eligible: true, qr }
+      results = { ...results, events: processedEvents }
+      const lastDoseDate: string | undefined = max(processedEvents.map((ev: any) => ev.eventDate));
+      if (!!lastDoseDate && differenceInDays(new Date(), parseISO(lastDoseDate)) >= 14) {
+        const qr = await QRCode.toDataURL(`Name:${results.attributes[NAME_ATTRIBUTE]}\n${processedAttributes.idLabel}:${processedAttributes.idValue}\nSex:${results.attributes[SEX_ATTRIBUTE]}\nDOB:${results.attributes[DOB_ATTRIBUTE]}\nPHONE:${results.attributes[PHONE_ATTRIBUTE]}\n${processedEvents[0].bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(processedEvents[0].eventDate))},${processedEvents[0].orgUnitName}\n${processedEvents[1].bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(processedEvents[1].eventDate))},${processedEvents[1].orgUnitName}\n\nClick to verify\nhttps://epivac.health.go.ug/certificates/#/validate/${trackedEntityInstance}`, { margin: 0 });
+        results = { ...results, eligible: true, qr }
+      } else if (!!lastDoseDate) {
+        results = { ...results, message: `Your certificate is not yet ready please try again after ${14 - differenceInDays(new Date(), parseISO(lastDoseDate))} days` }
+      }
+    } else {
+      results = { ...results, message: `Your may have not been fully vaccinated, current records show you have only received first dose.` }
     }
   }
 
@@ -108,6 +122,8 @@ export function useTracker(nin: string | null, phone: string | null) {
         results = processTrackedEntityInstances(trackedEntityInstances)
       } else if (!!trackedEntityInstances1 && trackedEntityInstances1.length > 0) {
         results = processTrackedEntityInstances(trackedEntityInstances1)
+      } else {
+        results = { ...results, message: `No record with identifier ${nin} and phone number ending ${phone} was found` }
       }
       return results;
     },
