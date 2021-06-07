@@ -6,7 +6,8 @@ import {
 } from '@react-pdf/renderer';
 import { FC } from 'react';
 import mohImage from '../moh.png';
-import { NAME_ATTRIBUTE, NIN_ATTRIBUTE, VACCINATION_CARD_NO } from '../Queries';
+import sig from '../sig.png';
+import { NAME_ATTRIBUTE, VACCINATION_CARD_NO } from '../Queries';
 
 
 interface QR {
@@ -125,7 +126,7 @@ export const MyDocument: FC<QR> = ({ data, eventData, attributeData }) => {
                 <Text style={{ textTransform: 'uppercase', fontSize: '22px', letterSpacing: '1px', fontWeight: 'extrabold', fontFamily: 'Times-Bold' }}> COVID-19 VACCINATION CERTIFICATE</Text>
                 <Text style={{ margin: 30, textAlign: 'center' }}>
                   This is to Certify that
-                  <Text style={{ fontWeight: 'black', textTransform: 'uppercase', fontFamily: 'Helvetica-Bold' }}> {attributeData[NAME_ATTRIBUTE]} ({attributeData[NIN_ATTRIBUTE]}) </Text>
+                  <Text style={{ fontWeight: 'black', textTransform: 'uppercase', fontFamily: 'Helvetica-Bold' }}> {attributeData[NAME_ATTRIBUTE]} ({attributeData.idValue}) </Text>
                   was vaccinated against COVID-19 as shown below
                 </Text>
               </View>
@@ -151,12 +152,12 @@ export const MyDocument: FC<QR> = ({ data, eventData, attributeData }) => {
                       </View>
 
                       <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-                        <Text>&nbsp;</Text>
-                        <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: '14px' }}>({eventData[0].rpkH9ZPGJcX})</Text>
+                        <Text>MFG:</Text>
+                        <Text style={{}}>{eventData[0].rpkH9ZPGJcX}</Text>
                       </View>
                       <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text>Facility:</Text>
-                        <Text>{eventData[0].orgUnitName}</Text>
+                        <Text style={{ flex: 1, textAlign: 'right' }}>{eventData[0].orgUnitName}</Text>
                       </View>
                     </View>
                   </View>
@@ -181,12 +182,12 @@ export const MyDocument: FC<QR> = ({ data, eventData, attributeData }) => {
                       </View>
 
                       <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-                        <Text>&nbsp;</Text>
-                        <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: '14px' }}>({eventData[1].rpkH9ZPGJcX})</Text>
+                        <Text>MFG:</Text>
+                        <Text style={{}}>{eventData[1].rpkH9ZPGJcX}</Text>
                       </View>
                       <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text>Facility:</Text>
-                        <Text>{eventData[1].orgUnitName}</Text>
+                        <Text >Facility:</Text>
+                        <Text style={{ flex: 1, textAlign: 'right' }}>{eventData[1].orgUnitName}</Text>
                       </View>
                     </View>
                   </View>
@@ -199,16 +200,20 @@ export const MyDocument: FC<QR> = ({ data, eventData, attributeData }) => {
                 </View>
               </View>
 
-              <View style={{ display: 'flex', alignContent: 'center', alignItems: 'center', justifyContent: 'center', marginTop: '40px' }}>
+              <View style={{ display: 'flex', alignContent: 'center', alignItems: 'center', justifyContent: 'center', marginTop: '20px' }}>
                 <Text style={{ fontSize: '14px', fontFamily: 'Helvetica-Bold' }}>ISSUED AND APPROVED BY</Text>
-                <Text style={{ fontSize: '14px', textTransform: 'uppercase', marginVertical: '25px' }}>DIRECTOR GENERAL OF HEALTH SERVICES, Ministry of Health</Text>
+                <Image
+                  style={{ height: 60 }}
+                  src={sig}
+                />
+                <Text style={{ fontSize: '14px', textTransform: 'uppercase', marginBottom: '25px' }}>DIRECTOR GENERAL OF HEALTH SERVICES, Ministry of Health</Text>
               </View>
               <Image src={mohImage} style={styles.pageBackground} />
 
               <View
                 style={{ ...styles.pageNumber }}
               >
-                <Text>tel. +256-417-712323 | email. unepi@health.go.ug | website. www.health.go.ug </Text>
+                <Text>tel. +256-417-712-221 | email. ps@health.go.ug | website. www.health.go.ug </Text>
               </View>
             </View>
           </View>

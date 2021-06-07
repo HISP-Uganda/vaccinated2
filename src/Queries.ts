@@ -119,9 +119,9 @@ export function useTracker(nin: string | null, phone: string | null) {
 
       let results = {};
       if (!!trackedEntityInstances && trackedEntityInstances.length > 0) {
-        results = processTrackedEntityInstances(trackedEntityInstances)
+        results = processTrackedEntityInstances(trackedEntityInstances);
       } else if (!!trackedEntityInstances1 && trackedEntityInstances1.length > 0) {
-        results = processTrackedEntityInstances(trackedEntityInstances1)
+        results = processTrackedEntityInstances(trackedEntityInstances1, false)
       } else {
         results = { ...results, message: `No record with identifier ${nin} and phone number ending ${phone} was found` }
       }
