@@ -23,36 +23,16 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 5,
   },
-  title: {
-    fontSize: 24,
-    textAlign: 'center',
-    fontFamily: 'Oswald',
-  },
-  author: {
-    fontSize: 12,
-    textAlign: 'center',
-    marginBottom: 40,
-  },
-  subtitle: {
-    fontSize: 18,
-    margin: 12,
-    fontFamily: 'Oswald',
-  },
-  text: {
-    margin: 12,
-    fontSize: 14,
-    textAlign: 'justify',
-    fontFamily: 'Times-Roman',
-  },
   image: {
     width: 80,
-    height: 80
+    height: 80,
   },
   header: {
     marginTop: 10,
     display: 'flex',
     alignItems: 'center',
-
+    alignContent: 'center',
+    justifyContent: 'center'
   },
   pageNumber: {
     position: 'absolute',
@@ -68,12 +48,7 @@ const styles = StyleSheet.create({
   },
   pageBackground: {
     position: 'absolute',
-    // minWidth: '100%',
-    // minHeight: '100%',
-    // display: 'none',
-    // marginLeft: 'auto',
-    // marginRight: 'auto',
-    marginLeft: '27%',
+    marginLeft: '24.5%',
     marginTop: '10%',
     opacity: 0.2,
     zIndex: -1,
@@ -81,9 +56,6 @@ const styles = StyleSheet.create({
     width: 350,
   },
   table: { display: 'flex', flexDirection: 'row', height: 170, marginHorizontal: '10px' },
-  tableRow: { margin: "auto", flexDirection: "row" },
-  tableCol: { width: "25%", borderStyle: "solid", borderWidth: 1, borderLeftWidth: 0, borderTopWidth: 0 },
-  tableCell: { margin: "auto", marginTop: 5, fontSize: 10 }
 });
 
 // Create Document Component
@@ -103,27 +75,30 @@ export const MyDocument: FC<QR> = ({ data, eventData, attributeData }) => {
           <View style={{ width: '100%', height: '100%', border: '3px solid yellow' }}>
             <View style={{ width: '100%', height: '100%', border: '3px solid red' }}>
               <View style={styles.header}>
-                <View style={{ display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'space-between', alignContent: 'center', alignItems: 'center', paddingHorizontal: '10px' }}>
-                  <View>
+                <View style={{ display: 'flex', flexDirection: 'row', width: '100%', alignContent: 'center', alignItems: 'center', paddingHorizontal: '10px' }}>
+                  <View style={{ width: '30%' }}>
                     <Text>Certificate No:</Text>
                     <Text style={{ fontFamily: 'Times-Italic', color: 'red' }}>{Math.floor(Math.random() * (99999999 - 10000000 + 1) + 10000000)}</Text>
                   </View>
-                  <View>
+                  <View style={{ width: '40%', display: 'flex', justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
                     <Image
                       style={styles.image}
                       src={mohImage}
                     />
                   </View>
-                  <View>
+                  <View style={{ width: '30%', textAlign: 'right' }}>
                     <View>
                       <Text>Card No:</Text>
                       <Text style={{ fontFamily: 'Times-Italic', color: 'red' }}>{attributeData[VACCINATION_CARD_NO]}</Text>
                     </View>
                   </View>
                 </View>
-                <Text style={{ textTransform: 'uppercase', fontSize: '12px', letterSpacing: '5px', marginVertical: 2 }}>Republic of Uganda</Text>
-                <Text style={{ textTransform: 'uppercase', fontSize: '12px', letterSpacing: '1px', marginBottom: '30px' }}> Ministry of Health</Text>
-                <Text style={{ textTransform: 'uppercase', fontSize: '22px', letterSpacing: '1px', fontWeight: 'extrabold', fontFamily: 'Times-Bold' }}> COVID-19 VACCINATION CERTIFICATE</Text>
+                {/* <View style={{ backgroundColor: 'red' }}> */}
+
+                <Text style={{ textTransform: 'uppercase', fontSize: '12px', letterSpacing: '5px', marginVertical: 2, fontFamily: 'Times-Bold' }}>Republic of Uganda</Text>
+                <Text style={{ textTransform: 'uppercase', fontSize: '12px', letterSpacing: '1px', marginBottom: '30px', fontFamily: 'Times-Bold' }}> Ministry of Health</Text>
+                <Text style={{ textTransform: 'uppercase', fontSize: '22px', letterSpacing: '1px', fontWeight: 'extrabold', fontFamily: 'Times-Bold' }}>COVID-19 VACCINATION CERTIFICATE</Text>
+                {/* </View> */}
                 <Text style={{ margin: 30, textAlign: 'center' }}>
                   This is to Certify that
                   <Text style={{ fontWeight: 'black', textTransform: 'uppercase', fontFamily: 'Helvetica-Bold' }}> {attributeData[NAME_ATTRIBUTE]} ({attributeData.idValue}) </Text>

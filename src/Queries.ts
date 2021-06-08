@@ -21,7 +21,6 @@ const PHONE_ATTRIBUTE = 'ciCR6BBvIT4';
 // export const NAME_ATTRIBUTE = 'w75KJ2mc4zz';
 // export const PROGRAM_STAGE = 'A03MvHHogjR';
 
-
 export const api = axios.create({
   baseURL: 'https://epivac.health.go.ug/api/',
   timeout: 10000,
@@ -47,7 +46,6 @@ const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN:
     const processedEvents = programEnrollment.events.filter((event: any) => !!event.eventDate && event.programStage === PROGRAM_STAGE).map(({ dataValues, ...others }: any) => {
       return { ...others, ...fromPairs(dataValues.map((dv: any) => [dv.dataElement, dv.value])) }
     });
-
     if (processedEvents.length >= 2) {
       results = { ...results, events: processedEvents }
       const lastDoseDate: string | undefined = max(processedEvents.map((ev: any) => ev.eventDate));
