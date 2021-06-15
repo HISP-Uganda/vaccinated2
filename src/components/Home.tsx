@@ -47,7 +47,7 @@ const Home = () => {
         <Heading color="blackAlpha.500">Get Your Certificate Now</Heading>
         <Stack direction="column">
           <Box fontSize="xl" fontWeight="black">Registered ID</Box>
-          <Input border="4px" borderColor="blue.100" placeholder="Enter NIN" onChange={onChange} value={nin} size="lg" />
+          <Input border="4px" borderColor="blue.100" placeholder="Enter Registration ID" onChange={onChange} value={nin} size="lg" />
         </Stack>
         <Stack>
           <Box fontSize="xl" fontWeight="black">Last 6 digits of your registered phone number</Box>

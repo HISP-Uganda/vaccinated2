@@ -12,14 +12,12 @@ export const NIN_ATTRIBUTE = 'Ewi7FUfcHAD';
 export const PROGRAM_STAGE = 'a1jCssI2LkW';
 export const OTHER_ID = 'YvnFn4IjKzx';
 export const VACCINATION_CARD_NO = 'hDdStedsrHN';
-const SEX_ATTRIBUTE = 'FZzQbW8AWVd';
-const DOB_ATTRIBUTE = 'mAWcalQYYyk';
-const PHONE_ATTRIBUTE = 'ciCR6BBvIT4';
-// Localhost
-// export const PROGRAM = 'IpHINAT79UW';
-// export const ATTRIBUTE = 'TfdH5KvFmMy';
-// export const NAME_ATTRIBUTE = 'w75KJ2mc4zz';
-// export const PROGRAM_STAGE = 'A03MvHHogjR';
+export const SEX_ATTRIBUTE = 'FZzQbW8AWVd';
+export const DOB_ATTRIBUTE = 'mAWcalQYYyk';
+export const PHONE_ATTRIBUTE = 'ciCR6BBvIT4';
+export const BATCH_ATTRIBUTE = 'Yp1F4txx8tm';
+export const VACCINE_ATTRIBUTE = 'bbnyNYD1wgS';
+export const MFG_ATTRIBUTE = 'rpkH9ZPGJcX';
 
 export const api = axios.create({
   baseURL: 'https://epivac.health.go.ug/api/',
@@ -44,7 +42,7 @@ const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN:
   const programEnrollment = enrollments.find((en: any) => en.program === PROGRAM)
   if (programEnrollment) {
     const processedEvents = programEnrollment.events.filter((event: any) => !!event.eventDate && event.programStage === PROGRAM_STAGE).map(({ dataValues, ...others }: any) => {
-      return { ...others, ...fromPairs(dataValues.map((dv: any) => [dv.dataElement, dv.value])) }
+      return { ...others, ...fromPairs(dataValues.map((dv: any) => [dv.dataElement, dv.value])) };
     });
     if (processedEvents.length >= 2) {
       results = { ...results, events: processedEvents }
