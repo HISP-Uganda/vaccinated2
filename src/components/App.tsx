@@ -12,11 +12,11 @@ import Validate from "./Validate";
 const App = () => (
   <Router>
     <Flex w="100vw" h="100vh" direction="column">
-      <Stack px={20} direction="row" bg="blue.800" py={1} alignContent="center" alignItems="center" textColor="white" fontSize="4xl" spacing="30px">
+      <Stack px={[1, 1, 20]} direction="row" bg="blue.800" py={1} alignContent="center" alignItems="center" textColor="white" fontSize="4xl" spacing="30px">
         <Image src={mohImage} alt="Ministry of Health" boxSize="65px" />
         <Box>Ministry of Health</Box>
       </Stack>
-      <Box px={20} flex={1}>
+      <Box px={[1, 1, 20]} flex={1}>
         <Switch>
           <Route path="/validate/:tei" exact>
             <Validate />
