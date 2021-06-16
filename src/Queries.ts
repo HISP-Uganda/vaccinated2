@@ -57,7 +57,6 @@ const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN:
       results = { ...results, message: `Your may have not been fully vaccinated, current records show you have only received first dose.` }
     }
   }
-
   return results;
 }
 
@@ -68,11 +67,18 @@ export function useInstance(tei: string, nin: string) {
     async () => {
       const params: any = {
         program: PROGRAM,
-        attribute: ATTRIBUTE
+        attribute: ATTRIBUTE,
+        fields: '*'
       }
-      const { data: { attributes } } = await api.get(`trackedEntityInstances/${tei}`, { params });
-      // const allAttributes = fromPairs(attributes.map((a: any) => [a.attribute, a.value]));
-      return attributes.length > 0;
+      const { data: { attributes, enrollments } } = await api.get(`trackedEntityInstances/${tei}`, { params });
+      const allAttributes = fromPairs(attributes.map((a: any) => [a.attribute, a.value]));
+      const programEnrollment = enrollments.find((en: any) => en.program === PROGRAM);
+      if (programEnrollment) {
+        const processedEvents = programEnrollment.events.filter((event: any) => !!event.eventDate && event.programStage === PROGRAM_STAGE).map(({ dataValues, ...others }: any) => {
+          return { ...others, ...fromPairs(dataValues.map((dv: any) => [dv.dataElement, dv.value])) };
+        });
+        return { ...allAttributes, ...processedEvents };
+      }
     },
   );
 }
