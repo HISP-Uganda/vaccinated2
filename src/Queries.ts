@@ -49,7 +49,13 @@ const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN:
       const lastDoseDate: string | undefined = max(processedEvents.map((ev: any) => ev.eventDate));
       if (!!lastDoseDate && differenceInDays(new Date(), parseISO(lastDoseDate)) >= 14) {
         const qr = await QRCode.toDataURL(`Name:${results.attributes[NAME_ATTRIBUTE]}\n${processedAttributes.idLabel}:${processedAttributes.idValue}\nSex:${results.attributes[SEX_ATTRIBUTE]}\nDOB:${results.attributes[DOB_ATTRIBUTE] || ' '}\nPHONE:${results.attributes[PHONE_ATTRIBUTE]}\n${processedEvents[0].bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(processedEvents[0].eventDate))},${processedEvents[0].orgUnitName}\n${processedEvents[1].bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(processedEvents[1].eventDate))},${processedEvents[1].orgUnitName}\n\nClick to verify\nhttps://epivac.health.go.ug/certificates/#/validate/${trackedEntityInstance}`, { margin: 0 });
-        results = { ...results, eligible: true, qr }
+        const { prints, id } = await getCertificateDetails(trackedEntityInstance);
+        if (prints <= 5) {
+          results = { ...results, eligible: true, qr, certificate: id };
+        } else {
+          results = { ...results, message: `Your have exceeded the numbers of downloads` }
+        }
+
       } else if (!!lastDoseDate) {
         results = { ...results, message: `Your certificate is not yet ready please try again after ${14 - differenceInDays(new Date(), parseISO(lastDoseDate))} days` }
       }
@@ -130,6 +136,29 @@ export function useTracker(nin: string | null, phone: string | null) {
       return results;
     },
   );
+}
+
+
+export async function getCertificateDetails(tei: string) {
+  const { data } = await api.get('dataStore');
+
+  if (data.indexOf("covid19-certificates") !== -1) {
+    const { data } = await api.get("dataStore/covid19-certificates");
+    if (data.indexOf(tei) !== -1) {
+      let { data: details } = await api.get(`dataStore/covid19-certificates/${tei}`);
+      details = { ...details, prints: details.prints + 1 };
+      await api.put(`dataStore/covid19-certificates/${tei}`, details);
+      return details;
+    } else {
+      const details = { id: Math.floor(Math.random() * (99999999 - 10000000 + 1) + 10000000), prints: 1 }
+      await api.post(`dataStore/covid19-certificates/${tei}`, details);
+      return details;
+    }
+  } else {
+    const details = { id: Math.floor(Math.random() * (99999999 - 10000000 + 1) + 10000000), prints: 1 }
+    await api.post(`dataStore/covid19-certificates/${tei}`, details);
+    return details;
+  }
 }
 
 

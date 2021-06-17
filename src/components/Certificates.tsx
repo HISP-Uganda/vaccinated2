@@ -1,4 +1,4 @@
-import { Box, Button, Flex, FormControl, FormErrorMessage, FormLabel, Input, SimpleGrid, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, FormControl, FormErrorMessage, FormLabel, Input, SimpleGrid, Text, CircularProgress } from '@chakra-ui/react';
 import { PDFViewer } from '@react-pdf/renderer';
 import { Field, Form, Formik } from 'formik';
 import { FC } from 'react';
@@ -26,21 +26,23 @@ const ContactSchema = Yup.object().shape({
 const Certificates: FC<TerminologyProps> = () => {
   const history = useHistory();
   const initialValues: Contact = { fullName: '', registrationId: '', secondDoseDate: '', secondDosePlace: '' };
-
   const { search } = useLocation();
   const params = new URLSearchParams(search);
   const { error, isError, isLoading, isSuccess, data } = useTracker(params.get('nin'), params.get('phone'))
   return (
     <Flex alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" h="100%">
-      {isLoading && <Box fontSize="4xl">Loading</Box>}
-      {isSuccess && data.eligible && <Flex direction="column">
-        <Button>Back</Button>
+      {isLoading && <Box fontSize="4xl">
+        <CircularProgress isIndeterminate color="blue.700" />
+      </Box>}
+      {isSuccess && data.eligible && <Flex direction="column" width="100%" height="100%">
+        <Button onClick={() => history.push("/")}>Back</Button>
         <PDFViewer width="100%" height="100%">
-          <MyDocument data={data.qr} trackedEntityInstance={data.trackedEntityInstance} attributeData={data.attributes} eventData={data.events} />
+          <MyDocument data={data.qr} trackedEntityInstance={data.trackedEntityInstance} attributeData={data.attributes} eventData={data.events} certificate={data.certificate} />
         </PDFViewer>
       </Flex>}
       {isSuccess && !data.eligible && <Box>
-        <Text fontSize="2xl">{data.message}</Text>
+        <Text fontSize="3xl" mb={5}>{data.message}</Text>
+        <Text fontSize="4xl" mb={5}>Contact Us</Text>
         <Formik
           initialValues={initialValues}
           validationSchema={ContactSchema}
@@ -101,26 +103,6 @@ const Certificates: FC<TerminologyProps> = () => {
             </Form>
           )}
         </Formik>
-        {/* <Stack spacing="20px">
-          <Heading color="blackAlpha.500">Contact Us</Heading>
-          <Stack direction="column">
-            <Box fontSize="xl" fontWeight="black">Full Name:</Box>
-            <Input border="2px" borderColor="blue.100" placeholder="Enter Your Full Name" onChange={onChange} value={nin} size="lg" />
-          </Stack>
-          <Stack direction="column">
-            <Box fontSize="xl" fontWeight="black">Registered ID:</Box>
-            <Input border="2px" borderColor="blue.100" placeholder="Enter Registration ID" onChange={onChange} value={nin} size="lg" />
-          </Stack>
-          <Stack>
-            <Box fontSize="xl" fontWeight="black">Date of Second Dose</Box>
-            <Input border="2px" borderColor="blue.100" placeholder="Date of Second Dose" onChange={onChange1} value={phoneNumber} size="lg" />
-          </Stack>
-          <Stack>
-            <Box fontSize="xl" fontWeight="black">Place of Second Dose</Box>
-            <Input border="2px" borderColor="blue.100" placeholder="Place of Second Dose" onChange={onChange1} value={phoneNumber} size="lg" />
-          </Stack>
-          <Box><Button size="lg" bg="blue.600" color="white" textTransform="uppercase" onClick={submit}>Submit</Button></Box>
-        </Stack> */}
       </Box>}
       {isError && <Box>{error?.message}</Box>}
     </Flex>

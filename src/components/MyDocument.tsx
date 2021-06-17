@@ -9,12 +9,12 @@ import mohImage from '../moh.png';
 import sig from '../sig.png';
 import { NAME_ATTRIBUTE, VACCINATION_CARD_NO } from '../Queries';
 
-
 interface QR {
   data: any,
   attributeData: any;
   eventData: any;
-  trackedEntityInstance: string
+  trackedEntityInstance: string;
+  certificate: string;
 }
 
 // Create styles
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
 });
 
 // Create Document Component
-export const MyDocument: FC<QR> = ({ data, eventData, attributeData }) => {
+export const MyDocument: FC<QR> = ({ data, eventData, attributeData, certificate }) => {
   return (
     <Document>
       <Page size="A4" style={styles.body} orientation="landscape">
@@ -77,7 +77,7 @@ export const MyDocument: FC<QR> = ({ data, eventData, attributeData }) => {
                 <View style={{ display: 'flex', flexDirection: 'row', width: '100%', alignContent: 'center', alignItems: 'center', paddingHorizontal: '10px' }}>
                   <View style={{ width: '30%' }}>
                     <Text>Certificate No:</Text>
-                    <Text style={{ fontFamily: 'Times-Italic', color: 'red' }}>{Math.floor(Math.random() * (99999999 - 10000000 + 1) + 10000000)}</Text>
+                    <Text style={{ fontFamily: 'Times-Italic', color: 'red' }}>{certificate}</Text>
                   </View>
                   <View style={{ width: '40%', display: 'flex', justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
                     <Image
