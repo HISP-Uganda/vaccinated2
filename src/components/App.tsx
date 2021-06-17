@@ -8,6 +8,7 @@ import mohImage from '../moh.png';
 import Certificates from './Certificates';
 import Home from "./Home";
 import Validate from "./Validate";
+import Contact from './Contact';
 
 const App = () => (
   <Router>
@@ -23,6 +24,9 @@ const App = () => (
           </Route>
           <Route path="/generate" exact>
             <Certificates />
+          </Route>
+          <Route path="/contact" exact>
+            <Contact />
           </Route>
           <Route path="/" exact>
             <Home />

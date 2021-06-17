@@ -60,7 +60,6 @@ const styles = StyleSheet.create({
 
 // Create Document Component
 export const MyDocument: FC<QR> = ({ data, eventData, attributeData }) => {
-
   return (
     <Document>
       <Page size="A4" style={styles.body} orientation="landscape">
