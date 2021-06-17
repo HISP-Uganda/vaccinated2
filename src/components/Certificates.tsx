@@ -75,7 +75,7 @@ const Certificates: FC<TerminologyProps> = () => {
                 <Field name="secondDoseDate">
                   {({ field }: any) => (
                     <FormControl isInvalid={!!errors.secondDoseDate && !!touched.secondDoseDate}>
-                      <FormLabel htmlFor="secondDoseDate">Second Dose Place</FormLabel>
+                      <FormLabel htmlFor="secondDoseDate">Second Dose Date</FormLabel>
                       <Input {...field} id="secondDoseDate" placeholder="Second Dose Date" />
                       <FormErrorMessage>{errors.secondDoseDate}</FormErrorMessage>
                     </FormControl>
