@@ -12,6 +12,11 @@ interface Contact {
   registrationId: string;
   secondDoseDate: string;
   secondDosePlace: string;
+  cardNo:string;
+  district:string;
+  facility:string;
+  email:string;
+  phone:string;
 }
 interface TerminologyProps {
 }
@@ -25,7 +30,7 @@ const ContactSchema = Yup.object().shape({
 
 const Certificates: FC<TerminologyProps> = () => {
   const history = useHistory();
-  const initialValues: Contact = { fullName: '', registrationId: '', secondDoseDate: '', secondDosePlace: '' };
+  const initialValues: Contact = { fullName: '', registrationId: '', secondDoseDate: '', secondDosePlace: '', cardNo: '', district: '', facility: '', phone: '', email: ''};
   const { search } = useLocation();
   const params = new URLSearchParams(search);
   const { error, isError, isLoading, isSuccess, data } = useTracker(params.get('nin'), params.get('phone'))
@@ -41,8 +46,8 @@ const Certificates: FC<TerminologyProps> = () => {
         </PDFViewer>
       </Flex>}
       {isSuccess && !data.eligible && <Box>
-        <Text fontSize="3xl" mb={5}>{data.message}</Text>
-        <Text fontSize="4xl" mb={5}>Contact Us</Text>
+        <Text fontSize="4xl" color="red.400" mb={5}>{data.message}</Text>
+        <Text fontSize="3xl" fontWeight="bold" mb={5}>Please provide your details for follow up:</Text>
         <Formik
           initialValues={initialValues}
           validationSchema={ContactSchema}
@@ -57,8 +62,8 @@ const Certificates: FC<TerminologyProps> = () => {
                 <Field name="fullName">
                   {({ field }: any) => (
                     <FormControl isInvalid={!!errors.fullName && !!touched.fullName}>
-                      <FormLabel htmlFor="fullName">Full Name</FormLabel>
-                      <Input {...field} id="fullName" placeholder="Full Name" />
+                      <FormLabel fontSize="2xl" fontWeight="bold" htmlFor="fullName">Full Name</FormLabel>
+                      <Input size="lg" {...field} id="fullName" placeholder="Full Name" />
                       <FormErrorMessage>{errors.fullName}</FormErrorMessage>
                     </FormControl>
                   )}
@@ -66,32 +71,85 @@ const Certificates: FC<TerminologyProps> = () => {
                 <Field name="registrationId">
                   {({ field }: any) => (
                     <FormControl isInvalid={!!errors.registrationId && !!touched.registrationId}>
-                      <FormLabel htmlFor="registrationId">Registration Id</FormLabel>
-                      <Input {...field} id="registrationId" placeholder="Registration Id" />
+                      <FormLabel fontSize="2xl" fontWeight="bold" htmlFor="registrationId">Registration Id</FormLabel>
+                      <Input size="lg" {...field} id="registrationId" placeholder="The ID used during vaccination" />
                       <FormErrorMessage>{errors.registrationId}</FormErrorMessage>
                     </FormControl>
                   )}
                 </Field>
-                <Field name="secondDoseDate">
+                <Field name="cardNo">
                   {({ field }: any) => (
-                    <FormControl isInvalid={!!errors.secondDoseDate && !!touched.secondDoseDate}>
-                      <FormLabel htmlFor="secondDoseDate">Second Dose Date</FormLabel>
-                      <Input {...field} id="secondDoseDate" placeholder="Second Dose Date" />
-                      <FormErrorMessage>{errors.secondDoseDate}</FormErrorMessage>
+                    <FormControl isInvalid={!!errors.cardNo && !!touched.cardNo}>
+                      <FormLabel fontSize="2xl" fontWeight="bold" htmlFor="cardNo">Vaccination Card No</FormLabel>
+                      <Input size="lg" {...field} id="cardNo" placeholder="Vaccination Card No" />
+                      <FormErrorMessage>{errors.cardNo}</FormErrorMessage>
                     </FormControl>
                   )}
                 </Field>
-                <Field name="secondDosePlace">
+                <SimpleGrid columns={2} gap="30px">
+                  <Field name="secondDoseDate">
+                    {({ field }: any) => (
+                      <FormControl isInvalid={!!errors.secondDoseDate && !!touched.secondDoseDate}>
+                        <FormLabel fontSize="2xl" fontWeight="bold" htmlFor="secondDoseDate">Date of 2nd/Last Dose</FormLabel>
+                        <Input size="lg" {...field} id="secondDoseDate" placeholder="Date of 2nd/Last Dose" />
+                        <FormErrorMessage>{errors.secondDoseDate}</FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
+                  <Field name="secondDosePlace">
+                    {({ field }: any) => (
+                      <FormControl isInvalid={!!errors.secondDosePlace && !!touched.secondDosePlace}>
+                        <FormLabel fontSize="2xl" fontWeight="bold" htmlFor="secondDosePlace">Place of 2nd/Last Dose </FormLabel>
+                        <Input size="lg" {...field} id="secondDosePlace" placeholder="Place 2nd/Last Dose" />
+                        <FormErrorMessage>{errors.secondDosePlace}</FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
+                </SimpleGrid>
+                <SimpleGrid columns={2} gap="30px">
+                  <Field name="district">
+                    {({ field }: any) => (
+                      <FormControl isInvalid={!!errors.district && !!touched.district}>
+                        <FormLabel fontSize="2xl" fontWeight="bold" htmlFor="district">District</FormLabel>
+                        <Input size="lg" {...field} id="district" placeholder="District" />
+                        <FormErrorMessage>{errors.district}</FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
+                  <Field name="facility">
+                    {({ field }: any) => (
+                      <FormControl isInvalid={!!errors.facility && !!touched.facility}>
+                        <FormLabel fontSize="2xl" fontWeight="bold" htmlFor="facility">Facility:</FormLabel>
+                        <Input size="lg" {...field} id="facility" placeholder="Facility" />
+                        <FormErrorMessage>{errors.facility}</FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
+                </SimpleGrid>
+                <SimpleGrid columns={2} gap="30px">
+                  <Field name="email">
                   {({ field }: any) => (
-                    <FormControl isInvalid={!!errors.secondDosePlace && !!touched.secondDosePlace}>
-                      <FormLabel htmlFor="secondDosePlace">Second Dose Place</FormLabel>
-                      <Input {...field} id="secondDosePlace" placeholder="Second Dose Place" />
-                      <FormErrorMessage>{errors.secondDosePlace}</FormErrorMessage>
+                    <FormControl isInvalid={!!errors.email && !!touched.email}>
+                      <FormLabel fontSize="2xl" fontWeight="bold" htmlFor="email">Email:</FormLabel>
+                      <Input size="lg" {...field} id="email" placeholder="Email" />
+                      <FormErrorMessage>{errors.email}</FormErrorMessage>
                     </FormControl>
                   )}
-                </Field>
+                  </Field>
+                  <Field name="phone">
+                    {({ field }: any) => (
+                      <FormControl isInvalid={!!errors.phone && !!touched.phone}>
+                        <FormLabel fontSize="2xl" fontWeight="bold" htmlFor="phone">Phone:</FormLabel>
+                        <Input size="lg" {...field} id="phone" placeholder="Phone" />
+                        <FormErrorMessage>{errors.phone}</FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
+                </SimpleGrid>
                 <Box mt={4}>
                   <Button
+                    fontSize="2xl"
+                    size="lg"
                     colorScheme="teal"
                     isLoading={isSubmitting}
                     type="submit"
