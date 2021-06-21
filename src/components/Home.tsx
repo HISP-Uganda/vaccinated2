@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Input, Stack, VStack, UnorderedList, ListItem, Text, Link,Spacer } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Input, Stack, VStack, UnorderedList, ListItem, Text, Link } from '@chakra-ui/react';
 import { ChangeEvent, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -50,7 +50,10 @@ const Home = () => {
           </ListItem>
         </UnorderedList>
         <Heading as="h5" size="lg" my={4}>Support</Heading>
-        <Flex><Box>Contact the COVID-19 Vaccination Support team  (via e-mail) <Link color="teal.500" href="mailto: unepi@health.go.ug">unepi@health.go.ug</Link></Box><Spacer/></Flex>
+        <Flex justifyContent={[null,null,"space-between"]} direction={["column","column","row"]}>
+          <Flex direction="column"><Text>Contact the COVID-19 Vaccination Support team</Text> <Link color="teal.500" href="mailto: unepi@health.go.ug">unepi@health.go.ug</Link></Flex>
+          <Flex direction="column"><Text>Call Center Toll Free Numbers:</Text> <Text color="teal.500">0800-230-033/0800-100-066/0800-303-033</Text></Flex>
+        </Flex>
       </Box>
       <Stack flex={1} pl={["none", "none", "20"]} spacing="20px">
         <Heading color="red.600" fontSize="4xl" mt="20">Completed your doses?</Heading>

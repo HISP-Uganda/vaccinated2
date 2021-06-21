@@ -1,4 +1,4 @@
-import { Box, Flex, Image, Stack, Link, Spacer } from "@chakra-ui/react";
+import { Box, Flex, Image, Stack, Link } from "@chakra-ui/react";
 import {
   HashRouter as Router,
   Route,
@@ -36,8 +36,8 @@ const App = () => (
           </Route>
         </Switch>
       </Box>
-      <Flex h="48px" bg="gray.100" justifyContent="center" alignContent="center" alignItems="center" justifyItems="center" p={5}>
-        <Box>© {new Date().getFullYear()} Copyright: Ministry of Health Uganda - COVID-19 Response Team</Box><Spacer/><Box>Designed by <Link color="teal.500" href="https://hispuganda.org/">HISP Uganda </Link></Box>
+      <Flex mt="5" bg="gray.100" justifyContent="space-between" alignContent="center" alignItems="center" justifyItems="center" p={5} direction={["column","column","row"]}>
+        <Box textAlign={["center","center",null]}>© {new Date().getFullYear()} Copyright: Ministry of Health Uganda - COVID-19 Response Team</Box><Box>Designed by <Link color="teal.500" href="https://hispuganda.org/">HISP Uganda </Link></Box>
       </Flex>
     </Flex>
   </Router>
