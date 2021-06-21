@@ -46,13 +46,12 @@ const Certificates: FC<TerminologyProps> = () => {
         </PDFViewer>
       </Flex>}
       {isSuccess && !data.eligible && <Box>
-        <Text fontSize="4xl" color="red.400" mb={5}>{data.message}</Text>
-        <Text fontSize="3xl" fontWeight="bold" mb={5}>Please provide your details for follow up:</Text>
+        <Text fontSize={['xl','xl','4xl']} color="red.400" mb={5}>{data.message}</Text>
+        <Text fontSize={['lg','lg','3xl']} fontWeight="bold" mb={5}>Please provide your details for follow up:</Text>
         <Formik
           initialValues={initialValues}
           validationSchema={ContactSchema}
           onSubmit={async (values, actions) => {
-            console.log(values);
             history.push('/contact');
           }}
         >

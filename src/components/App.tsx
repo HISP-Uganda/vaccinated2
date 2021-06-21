@@ -15,12 +15,12 @@ const App = () => (
   <Router>
     <Flex w="100vw" h="100vh" direction="column">
       <Link as={Linker} to="/" _hover={{border:"none"}}>
-        <Stack px={[1, 1, 20]} direction="row" bg="blue.800" py={1} alignContent="center" alignItems="center" textColor="white" fontSize="4xl" spacing="30px">
+        <Stack px={[1, 1, 20]} direction="row" bg="blue.800" py={1} alignContent="center" alignItems="center" textColor="white" fontSize={['md','md','4xl']} spacing="30px">
           <Image src={mohImage} alt="Ministry of Health" boxSize="65px" />
           <Box fontWeight="bold">Ministry of Health Uganda</Box>
         </Stack>
       </Link>
-      <Box px={[1, 1, 20]} flex={1} height="500px" overflow="auto">
+      <Box px={[1, 1, 20]} flex={1} overflow="auto">
         <Switch>
           <Route path="/validate/:tei" exact>
             <Validate />
