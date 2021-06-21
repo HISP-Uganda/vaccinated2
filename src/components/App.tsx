@@ -20,7 +20,7 @@ const App = () => (
           <Box fontWeight="bold">Ministry of Health Uganda</Box>
         </Stack>
       </Link>
-      <Box px={[1, 1, 20]} flex={1} overflow="auto">
+      <Box px={[1, 1, 20]} flex={1} height="500px" overflow="auto">
         <Switch>
           <Route path="/validate/:tei" exact>
             <Validate />

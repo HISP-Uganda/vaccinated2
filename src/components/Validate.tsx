@@ -10,7 +10,7 @@ const Validate = () => {
   const { tei } = useParams<ParamProps>();
   const { isError, isSuccess, isLoading, data } = useInstance(tei, 'XXXX')
   return (
-    <Flex alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" h="100%" fontSize={["3xl", "3xl", "4xl"]}>
+    <Flex alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" fontSize={["xl", "xl", "2xl"]} mt="5">
       {isLoading && <Box>Validating...</Box>}
       {isSuccess && !!data && <Flex direction="column">
         <Flex direction="column">
@@ -27,10 +27,6 @@ const Validate = () => {
             <Text fontWeight="bold">Registration ID:</Text>
             <Text pl={[null, null, "10px"]}>{data[NIN_ATTRIBUTE] || data[OTHER_ID]}</Text>
           </Flex>
-          {/* <Flex justifyContent="space-between" direction={["column", "column", "row"]}>
-            <Text>Certificate No:</Text>
-            <Text pl={[null, null, "10px"]}>CHarles Olupot</Text>
-          </Flex> */}
         </Flex>
         <Flex direction="column" mt="10">
           <Text bg="yellow.300" mb="10px">Vaccination Details</Text>

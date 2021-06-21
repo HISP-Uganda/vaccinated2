@@ -3,11 +3,12 @@ import { PDFViewer } from '@react-pdf/renderer';
 import { Field, Form, Formik } from 'formik';
 import { FC } from 'react';
 import { useHistory, useLocation } from 'react-router';
+import {useMutation} from 'react-query';
 import * as Yup from 'yup';
-import { useTracker } from '../Queries';
+import { useTracker, sendEmail } from '../Queries';
 import { MyDocument } from './MyDocument';
 
-interface Contact {
+export interface Contact {
   fullName: string;
   registrationId: string;
   secondDoseDate: string;
@@ -34,6 +35,8 @@ const Certificates: FC<TerminologyProps> = () => {
   const { search } = useLocation();
   const params = new URLSearchParams(search);
   const { error, isError, isLoading, isSuccess, data } = useTracker(params.get('nin'), params.get('phone'))
+  const {mutate} = useMutation(sendEmail,{
+  })
   return (
     <Flex alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" h="100%">
       {isLoading && <Box fontSize="4xl">
@@ -52,6 +55,7 @@ const Certificates: FC<TerminologyProps> = () => {
           initialValues={initialValues}
           validationSchema={ContactSchema}
           onSubmit={async (values, actions) => {
+            mutate(values);
             history.push('/contact');
           }}
         >

@@ -20,6 +20,7 @@
     "formik": "^2.2.9",
     "framer-motion": "^4.1.17",
     "lodash": "^4.17.21",
+    "node-mailjet": "^3.3.4",
     "qrcode": "^1.4.4",
     "qrcode.react": "^1.0.1",
     "query-string": "^7.0.0",
@@ -58,6 +59,7 @@
     ]
   },
   "devDependencies": {
+    "@types/node-mailjet": "^3.3.5",
     "@types/qrcode": "^1.4.0",
     "@types/qrcode.react": "^1.0.1",
     "@types/react-router-dom": "^5.1.7"

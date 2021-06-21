@@ -2,7 +2,7 @@ import axios from 'axios';
 import { fromPairs, max } from 'lodash';
 import { useQuery } from "react-query";
 import QRCode from 'qrcode';
-import { parseISO, differenceInDays } from 'date-fns'
+import { parseISO, differenceInDays } from 'date-fns';
 
 // Production
 export const PROGRAM = 'yDuAzyqYABS';
@@ -87,6 +87,37 @@ export function useInstance(tei: string, nin: string) {
       }
     },
   );
+}
+
+export async function sendEmail(data:any){
+
+  const email = axios.create({
+    baseURL: 'https://api.mailjet.com/v3.1/',
+    auth: { username: '02255d90a62b476dcb1129082cbc91be', password: '8c795fd335f2d3a4f230b6e3864ebc79' }
+  });
+
+  const payload = {
+    "Messages":[
+      {
+        "From": {
+          "Email": "colupot@hispuganda.org",
+          "Name": "HISP Uganda"
+        },
+        "To": [
+          {
+            "Email": "unepi@health.go.ug",
+            "Name": "UNEPI"
+          }
+        ],
+        "Subject": "COVAX Certificate complaint",
+        "TextPart": "This is a complaint from",
+        "HTMLPart": `<b>Name</b>: <b>${data.fullName}</b><br/><b>Registration Id</b>:<b>${data.registrationId}</b> `,
+        "CustomID": "AppGettingStartedTest"
+      }
+    ]
+  }
+
+  return await email.post('send', payload)
 }
 
 export function useTracker(nin: string | null, phone: string | null) {
