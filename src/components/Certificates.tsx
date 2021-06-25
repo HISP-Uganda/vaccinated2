@@ -1,11 +1,11 @@
-import { Box, Button, Flex, FormControl, FormErrorMessage, FormLabel, Input, SimpleGrid, Text, CircularProgress } from '@chakra-ui/react';
+import { Box, Button, CircularProgress, Flex, FormControl, FormErrorMessage, FormLabel, Input, SimpleGrid, Text } from '@chakra-ui/react';
 import { PDFViewer } from '@react-pdf/renderer';
 import { Field, Form, Formik } from 'formik';
 import { FC } from 'react';
+import { useMutation } from 'react-query';
 import { useHistory, useLocation } from 'react-router';
-import {useMutation} from 'react-query';
 import * as Yup from 'yup';
-import { useTracker, sendEmail } from '../Queries';
+import { sendEmail, useTracker } from '../Queries';
 import { MyDocument } from './MyDocument';
 
 export interface Contact {
@@ -13,11 +13,11 @@ export interface Contact {
   registrationId: string;
   secondDoseDate: string;
   secondDosePlace: string;
-  cardNo:string;
-  district:string;
-  facility:string;
-  email:string;
-  phone:string;
+  cardNo: string;
+  district: string;
+  facility: string;
+  email: string;
+  phone: string;
 }
 interface TerminologyProps {
 }
@@ -31,11 +31,11 @@ const ContactSchema = Yup.object().shape({
 
 const Certificates: FC<TerminologyProps> = () => {
   const history = useHistory();
-  const initialValues: Contact = { fullName: '', registrationId: '', secondDoseDate: '', secondDosePlace: '', cardNo: '', district: '', facility: '', phone: '', email: ''};
+  const initialValues: Contact = { fullName: '', registrationId: '', secondDoseDate: '', secondDosePlace: '', cardNo: '', district: '', facility: '', phone: '', email: '' };
   const { search } = useLocation();
   const params = new URLSearchParams(search);
   const { error, isError, isLoading, isSuccess, data } = useTracker(params.get('nin'), params.get('phone'))
-  const {mutate} = useMutation(sendEmail,{
+  const { mutate } = useMutation(sendEmail, {
   })
   return (
     <Flex alignContent="center" alignItems="center" justifyContent="center" justifyItems="center" h="100%">
@@ -48,9 +48,36 @@ const Certificates: FC<TerminologyProps> = () => {
           <MyDocument data={data.qr} trackedEntityInstance={data.trackedEntityInstance} attributeData={data.attributes} eventData={data.events} certificate={data.certificate} />
         </PDFViewer>
       </Flex>}
-      {isSuccess && !data.eligible && <Box>
-        <Text fontSize={['xl','xl','4xl']} color="red.400" mb={5}>{data.message}</Text>
-        <Text fontSize={['lg','lg','3xl']} fontWeight="bold" mb={5}>Please provide your details for follow up:</Text>
+      {isSuccess && !data.eligible && <Flex direction="column">
+        <Text fontSize={['xl', 'xl', '4xl']} color="red.400" mb={5}>{data.message}</Text>
+        {data.vaccinations === 1 && <SimpleGrid columns={4} fontSize="xl">
+          <Text fontWeight="bold">Current Vaccination Information</Text>
+          <Flex>
+            <Text fontWeight="bold">
+              Vaccine:
+            </Text>
+            <Text pl="5px">
+              {data.events[0].bbnyNYD1wgS}
+            </Text>
+          </Flex>
+          <Flex>
+            <Text fontWeight="bold">
+              Date:
+            </Text>
+            <Text pl="5px">
+              {new Intl.DateTimeFormat('fr').format(Date.parse(data.events[0].eventDate))}
+            </Text>
+          </Flex>
+          <Flex>
+            <Text fontWeight="bold">
+              Facility:
+            </Text>
+            <Text pl="5px">
+              {data.events[0].orgUnitName}
+            </Text>
+          </Flex>
+        </SimpleGrid>}
+        <Text fontSize={['lg', 'lg', '3xl']} fontWeight="bold" mb={5}>Please provide your details for follow up:</Text>
         <Formik
           initialValues={initialValues}
           validationSchema={ContactSchema}
@@ -131,13 +158,13 @@ const Certificates: FC<TerminologyProps> = () => {
                 </SimpleGrid>
                 <SimpleGrid columns={2} gap="30px">
                   <Field name="email">
-                  {({ field }: any) => (
-                    <FormControl isInvalid={!!errors.email && !!touched.email}>
-                      <FormLabel fontSize="2xl" fontWeight="bold" htmlFor="email">Email:</FormLabel>
-                      <Input size="lg" {...field} id="email" placeholder="Email" />
-                      <FormErrorMessage>{errors.email}</FormErrorMessage>
-                    </FormControl>
-                  )}
+                    {({ field }: any) => (
+                      <FormControl isInvalid={!!errors.email && !!touched.email}>
+                        <FormLabel fontSize="2xl" fontWeight="bold" htmlFor="email">Email:</FormLabel>
+                        <Input size="lg" {...field} id="email" placeholder="Email" />
+                        <FormErrorMessage>{errors.email}</FormErrorMessage>
+                      </FormControl>
+                    )}
                   </Field>
                   <Field name="phone">
                     {({ field }: any) => (
@@ -164,7 +191,7 @@ const Certificates: FC<TerminologyProps> = () => {
             </Form>
           )}
         </Formik>
-      </Box>}
+      </Flex>}
       {isError && <Box>{error?.message}</Box>}
     </Flex>
   )

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { fromPairs, max } from 'lodash';
+import { fromPairs, max, flatten } from 'lodash';
 import { useQuery } from "react-query";
 import QRCode from 'qrcode';
 import { parseISO, differenceInDays } from 'date-fns';
@@ -21,13 +21,21 @@ export const MFG_ATTRIBUTE = 'rpkH9ZPGJcX';
 
 export const api = axios.create({
   baseURL: 'https://epivac.health.go.ug/api/',
-  timeout: 10000,
   auth: { username: 'admin', password: 'District#9' }
 });
 
 const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN: boolean = true) => {
   let results: any = {};
-  const [{ attributes, enrollments, trackedEntityInstance }] = trackedEntityInstances;
+  const [{ attributes }] = trackedEntityInstances;
+  const trackedEntityInstance = trackedEntityInstances.map((tei: any) => tei.trackedEntityInstance).join(',')
+
+  const allEvents = trackedEntityInstances.map((tei: any) => {
+    const enroll = tei.enrollments.find((en: any) => en.program === PROGRAM);
+    if (enroll) {
+      return enroll.events
+    }
+    return undefined;
+  }).filter((tei: any) => tei !== undefined);
 
   let processedAttributes = fromPairs(attributes.map((a: any) => [a.attribute, a.value]));
 
@@ -39,35 +47,37 @@ const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN:
 
   results = { attributes: processedAttributes, trackedEntityInstance };
 
-  const programEnrollment = enrollments.find((en: any) => en.program === PROGRAM)
-  if (programEnrollment) {
-    const processedEvents = programEnrollment.events.filter((event: any) => !!event.eventDate && event.programStage === PROGRAM_STAGE).map(({ dataValues, ...others }: any) => {
-      return { ...others, ...fromPairs(dataValues.map((dv: any) => [dv.dataElement, dv.value])) };
-    });
-    if (processedEvents.length >= 2) {
-      results = { ...results, events: processedEvents }
-      const lastDoseDate: string | undefined = max(processedEvents.map((ev: any) => ev.eventDate));
-      if (!!lastDoseDate && differenceInDays(new Date(), parseISO(lastDoseDate)) >= 14) {
-        const qr = await QRCode.toDataURL(`Name:${results.attributes[NAME_ATTRIBUTE]}\n${processedAttributes.idLabel}:${processedAttributes.idValue}\nSex:${results.attributes[SEX_ATTRIBUTE]}\nDOB:${results.attributes[DOB_ATTRIBUTE] || ' '}\nPHONE:${results.attributes[PHONE_ATTRIBUTE]}\n${processedEvents[0].bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(processedEvents[0].eventDate))},${processedEvents[0].orgUnitName}\n${processedEvents[1].bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(processedEvents[1].eventDate))},${processedEvents[1].orgUnitName}\n\nClick to verify\nhttps://epivac.health.go.ug/certificates/#/validate/${trackedEntityInstance}`, { margin: 0 });
-        const { prints, id } = await getCertificateDetails(trackedEntityInstance);
-        if (prints <= 5) {
-          results = { ...results, eligible: true, qr, certificate: id };
-        } else {
-          results = { ...results, message: `Your have exceeded the numbers of downloads` }
-        }
+  const processedEvents = flatten(allEvents).filter((event: any) => !!event.eventDate && event.programStage === PROGRAM_STAGE).map(({ dataValues, ...others }: any) => {
+    return { ...others, ...fromPairs(dataValues.map((dv: any) => [dv.dataElement, dv.value])) };
+  });
 
-      } else if (!!lastDoseDate) {
-        results = { ...results, message: `Your certificate is not yet ready please try again after ${14 - differenceInDays(new Date(), parseISO(lastDoseDate))} days` }
+  if (processedEvents.length >= 2) {
+    results = { ...results, events: processedEvents }
+    const lastDoseDate: string | undefined = max(processedEvents.map((ev: any) => ev.eventDate));
+    if (!!lastDoseDate && differenceInDays(new Date(), parseISO(lastDoseDate)) >= 14) {
+      const qr = await QRCode.toDataURL(`Name:${results.attributes[NAME_ATTRIBUTE]}\n${processedAttributes.idLabel}:${processedAttributes.idValue}\nSex:${results.attributes[SEX_ATTRIBUTE]}\nDOB:${results.attributes[DOB_ATTRIBUTE] || ' '}\nPHONE:${results.attributes[PHONE_ATTRIBUTE]}\n${processedEvents[0].bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(processedEvents[0].eventDate))},${processedEvents[0].orgUnitName}\n${processedEvents[1].bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(processedEvents[1].eventDate))},${processedEvents[1].orgUnitName}\n\nClick to verify\nhttps://epivac.health.go.ug/certificates/#/validate/${trackedEntityInstance}`, { margin: 0 });
+      const { prints, id } = await getCertificateDetails(trackedEntityInstance);
+      if (prints <= 10) {
+        results = { ...results, eligible: true, qr, certificate: id };
+      } else {
+        results = { ...results, vaccinations: 2, message: `Your have exceeded the numbers of prints/downloads` }
       }
-    } else {
-      results = { ...results, message: `Your may have not been fully vaccinated, current records show you have only received first dose.` }
+
+    } else if (!!lastDoseDate) {
+      results = { ...results, message: `Your certificate is not yet ready please try again after ${14 - differenceInDays(new Date(), parseISO(lastDoseDate))} days` }
     }
+  } else if (processedEvents.length === 1) {
+    results = { ...results, events: processedEvents, vaccinations: 1, message: `Your may have not been fully vaccinated, current records show you have only received first dose.` }
+  } else {
+    results = { ...results, vaccinations: 0, message: `You have no registered vaccination information` }
   }
+
   return results;
 }
 
 
 export function useInstance(tei: string, nin: string) {
+  const allIds = tei.split(",");
   return useQuery<any, Error>(
     ['instance', tei],
     async () => {
@@ -76,48 +86,26 @@ export function useInstance(tei: string, nin: string) {
         attribute: ATTRIBUTE,
         fields: '*'
       }
-      const { data: { attributes, enrollments } } = await api.get(`trackedEntityInstances/${tei}`, { params });
-      const allAttributes = fromPairs(attributes.map((a: any) => [a.attribute, a.value]));
-      const programEnrollment = enrollments.find((en: any) => en.program === PROGRAM);
-      if (programEnrollment) {
-        const processedEvents = programEnrollment.events.filter((event: any) => !!event.eventDate && event.programStage === PROGRAM_STAGE).map(({ dataValues, ...others }: any) => {
-          return { ...others, ...fromPairs(dataValues.map((dv: any) => [dv.dataElement, dv.value])) };
-        });
-        return { ...allAttributes, ...processedEvents };
-      }
-    },
+      const records: any[] = await Promise.all(allIds.map((id: string) => api.get(`trackedEntityInstances/${id}`, { params })));
+      const allAttributes = fromPairs(records[0].attributes.map((a: any) => [a.attribute, a.value]));
+
+      const allEvents = records.map((tei: any) => {
+        const enroll = tei.enrollments.find((en: any) => en.program === PROGRAM);
+        if (enroll) {
+          return enroll.events
+        }
+        return undefined;
+      }).filter((tei: any) => tei !== undefined);
+      const processedEvents = flatten(allEvents).filter((event: any) => !!event.eventDate && event.programStage === PROGRAM_STAGE).map(({ dataValues, ...others }: any) => {
+        return { ...others, ...fromPairs(dataValues.map((dv: any) => [dv.dataElement, dv.value])) };
+      });
+      return { ...allAttributes, ...processedEvents };
+    }
   );
 }
 
-export async function sendEmail(data:any){
-
-  const email = axios.create({
-    baseURL: 'https://api.mailjet.com/v3.1/',
-    auth: { username: '02255d90a62b476dcb1129082cbc91be', password: '8c795fd335f2d3a4f230b6e3864ebc79' }
-  });
-
-  const payload = {
-    "Messages":[
-      {
-        "From": {
-          "Email": "colupot@hispuganda.org",
-          "Name": "HISP Uganda"
-        },
-        "To": [
-          {
-            "Email": "unepi@health.go.ug",
-            "Name": "UNEPI"
-          }
-        ],
-        "Subject": "COVAX Certificate complaint",
-        "TextPart": "This is a complaint from",
-        "HTMLPart": `<b>Name</b>: <b>${data.fullName}</b><br/><b>Registration Id</b>:<b>${data.registrationId}</b> `,
-        "CustomID": "AppGettingStartedTest"
-      }
-    ]
-  }
-
-  return await email.post('send', payload)
+export async function sendEmail(data: any) {
+  return await axios.post('http://localhost:3001/email', "This is  testing email");
 }
 
 export function useTracker(nin: string | null, phone: string | null) {
