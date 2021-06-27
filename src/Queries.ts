@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { fromPairs, max, flatten } from 'lodash';
+import { fromPairs, max, flatten, uniq } from 'lodash';
 import { useQuery } from "react-query";
 import QRCode from 'qrcode';
 import { parseISO, differenceInDays } from 'date-fns';
@@ -47,15 +47,25 @@ const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN:
 
   results = { attributes: processedAttributes, trackedEntityInstance };
 
-  const processedEvents = flatten(allEvents).filter((event: any) => !!event.eventDate && event.programStage === PROGRAM_STAGE).map(({ dataValues, ...others }: any) => {
+  let units: any[] = []
+
+  let processedEvents = flatten(allEvents).filter((event: any) => !!event.eventDate && event.programStage === PROGRAM_STAGE).map(({ dataValues, ...others }: any) => {
+    units = [...units, others.orgUnit]
     return { ...others, ...fromPairs(dataValues.map((dv: any) => [dv.dataElement, dv.value])) };
   });
+
+  const districts = await getDistricts(uniq(units));
+
+  processedEvents = processedEvents.map((ev: any) => {
+    return { ...ev, district: districts[ev.orgUnit] }
+  });
+
 
   if (processedEvents.length >= 2) {
     results = { ...results, events: processedEvents }
     const lastDoseDate: string | undefined = max(processedEvents.map((ev: any) => ev.eventDate));
     if (!!lastDoseDate && differenceInDays(new Date(), parseISO(lastDoseDate)) >= 14) {
-      const qr = await QRCode.toDataURL(`Name:${results.attributes[NAME_ATTRIBUTE]}\n${processedAttributes.idLabel}:${processedAttributes.idValue}\nSex:${results.attributes[SEX_ATTRIBUTE]}\nDOB:${results.attributes[DOB_ATTRIBUTE] || ' '}\nPHONE:${results.attributes[PHONE_ATTRIBUTE]}\n${processedEvents[0].bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(processedEvents[0].eventDate))},${processedEvents[0].orgUnitName}\n${processedEvents[1].bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(processedEvents[1].eventDate))},${processedEvents[1].orgUnitName}\n\nClick to verify\nhttps://epivac.health.go.ug/certificates/#/validate/${trackedEntityInstance}`, { margin: 0 });
+      const qr = await QRCode.toDataURL(`Name:${results.attributes[NAME_ATTRIBUTE]}\n${processedAttributes.idLabel}:${processedAttributes.idValue}\nSex:${results.attributes[SEX_ATTRIBUTE]}\nDOB:${results.attributes[DOB_ATTRIBUTE] || ' '}\nPHONE:${results.attributes[PHONE_ATTRIBUTE]}\n${processedEvents[0].bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(processedEvents[0].eventDate))},${processedEvents[0].orgUnitName},${processedEvents[0].district}\n${processedEvents[1].bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(processedEvents[1].eventDate))},${processedEvents[1].orgUnitName},${processedEvents[1].district}\n\nClick to verify\nhttps://epivac.health.go.ug/certificates/#/validate/${trackedEntityInstance}`, { margin: 0 });
       const { prints, id } = await getCertificateDetails(trackedEntityInstance);
       if (prints <= 10) {
         results = { ...results, eligible: true, qr, certificate: id };
@@ -71,7 +81,6 @@ const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN:
   } else {
     results = { ...results, vaccinations: 0, message: `You have no registered vaccination information` }
   }
-
   return results;
 }
 
@@ -87,21 +96,42 @@ export function useInstance(tei: string, nin: string) {
         fields: '*'
       }
       const records: any[] = await Promise.all(allIds.map((id: string) => api.get(`trackedEntityInstances/${id}`, { params })));
-      const allAttributes = fromPairs(records[0].attributes.map((a: any) => [a.attribute, a.value]));
+      const allAttributes = fromPairs(records[0].data.attributes.map((a: any) => [a.attribute, a.value]));
 
-      const allEvents = records.map((tei: any) => {
-        const enroll = tei.enrollments.find((en: any) => en.program === PROGRAM);
+      const allEvents = records.map(({ data }: any) => {
+        const enroll = data.enrollments.find((en: any) => en.program === PROGRAM);
         if (enroll) {
           return enroll.events
         }
         return undefined;
       }).filter((tei: any) => tei !== undefined);
-      const processedEvents = flatten(allEvents).filter((event: any) => !!event.eventDate && event.programStage === PROGRAM_STAGE).map(({ dataValues, ...others }: any) => {
-        return { ...others, ...fromPairs(dataValues.map((dv: any) => [dv.dataElement, dv.value])) };
+      let units: any[] = []
+      let processedEvents = flatten(allEvents).filter((event: any) => !!event.eventDate && event.programStage === PROGRAM_STAGE).map(({ dataValues, ...others }: any) => {
+        units = [...units, others.orgUnit]
+        return { ...others, ...fromPairs(dataValues.map((dv: any) => [dv.dataElement, dv.value])) }
       });
+      const districts = await getDistricts(uniq(units));
+
+      processedEvents = processedEvents.map((ev: any) => {
+        return { ...ev, district: districts[ev.orgUnit] }
+      })
       return { ...allAttributes, ...processedEvents };
     }
   );
+}
+
+export async function getDistricts(units: string[]) {
+  const params = {
+    includeAncestors: true,
+    fields: 'id,name,level'
+  }
+  const records: any[] = await Promise.all(units.map((id: string) => api.get(`organisationUnits/${id}`, { params })));
+  const processed = records.map(({ data: { organisationUnits } }: any, index: number) => {
+    const district = organisationUnits.find((unit: any) => unit.level === 3);
+    return [units[index], district.name]
+  });
+
+  return fromPairs(processed);
 }
 
 export async function sendEmail(data: any) {

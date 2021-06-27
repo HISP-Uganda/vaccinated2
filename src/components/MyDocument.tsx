@@ -133,6 +133,10 @@ export const MyDocument: FC<QR> = ({ data, eventData, attributeData, certificate
                         <Text>Facility:</Text>
                         <Text style={{ flex: 1, textAlign: 'right' }}>{eventData[0].orgUnitName}</Text>
                       </View>
+                      <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <Text >District:</Text>
+                        <Text style={{ flex: 1, textAlign: 'right' }}>{eventData[0].district}</Text>
+                      </View>
                     </View>
                   </View>
                   <View style={{ flex: 1 }}></View>
@@ -162,6 +166,10 @@ export const MyDocument: FC<QR> = ({ data, eventData, attributeData, certificate
                       <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text >Facility:</Text>
                         <Text style={{ flex: 1, textAlign: 'right' }}>{eventData[1].orgUnitName}</Text>
+                      </View>
+                      <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <Text >District:</Text>
+                        <Text style={{ flex: 1, textAlign: 'right' }}>{eventData[1].district}</Text>
                       </View>
                     </View>
                   </View>

@@ -53,6 +53,10 @@ const Validate = () => {
                 <Text fontWeight="bold">Facility:</Text>
                 <Text pl={[null, null, "10px"]}>{data["0"].orgUnitName}</Text>
               </Flex>
+              <Flex justifyContent="space-between" direction={["column", "column", "row"]}>
+                <Text fontWeight="bold">District:</Text>
+                <Text pl={[null, null, "10px"]}>{data["0"].district}</Text>
+              </Flex>
             </Flex>
             <Flex direction="column" border="1px solid gray" p="5px">
               <Text bg="gray.200">Dose2</Text>
@@ -75,6 +79,10 @@ const Validate = () => {
               <Flex justifyContent="space-between" direction={["column", "column", "row"]}>
                 <Text fontWeight="bold">Facility:</Text>
                 <Text pl={[null, null, "10px"]}>{data["1"].orgUnitName}</Text>
+              </Flex>
+              <Flex justifyContent="space-between" direction={["column", "column", "row"]}>
+                <Text fontWeight="bold">District:</Text>
+                <Text pl={[null, null, "10px"]}>{data["1"].district}</Text>
               </Flex>
             </Flex>
           </SimpleGrid>
