@@ -40,7 +40,7 @@ const Home = () => {
         <Box textAlign="justify">To generate your COVID-19 Vaccination Certificate, </Box>
         <UnorderedList spacing={3} pl={[2, 2, 7]}>
           <ListItem>
-            <Text>Enter the <b>Identification ID No</b> you used during vaccination ( e.g. NIN or any other registered alternative ID you registered during COVID-19 vaccination e.g Passport Number,  Employee ID, Driving Permit, Local Council ID, etc.) and the <b>last 6 digits of your registered phone number</b> during vaccination.</Text>
+            <Text>Enter the Identification ID No you used during vaccination ( e.g. NIN or any other registered alternative ID you registered during COVID-19 vaccination e.g Passport Number, Employee ID, Driving Permit, Local Council ID, etc. as written on the Vaccination Card) and the last 6 digits of your registered phone number during vaccination.</Text>
           </ListItem>
           <ListItem>
             <Text>Once your vaccination record is verified meeting all the certification requirements, your certificate will be generated and downloadable as a PDF file that you can directly print or save as an electronic copy</Text>

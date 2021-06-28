@@ -1,6 +1,7 @@
 import { Box, Button, CircularProgress, Flex, FormControl, FormErrorMessage, FormLabel, Input, SimpleGrid, Text } from '@chakra-ui/react';
 import { PDFViewer } from '@react-pdf/renderer';
 import { Field, Form, Formik } from 'formik';
+import { useState } from 'react';
 import { FC } from 'react';
 import { useMutation } from 'react-query';
 import { useHistory, useLocation } from 'react-router';
@@ -31,6 +32,7 @@ const ContactSchema = Yup.object().shape({
 
 const Certificates: FC<TerminologyProps> = () => {
   const history = useHistory();
+  const [displayForm, setDisplayForm] = useState<boolean>(false)
   const initialValues: Contact = { fullName: '', registrationId: '', secondDoseDate: '', secondDosePlace: '', cardNo: '', district: '', facility: '', phone: '', email: '' };
   const { search } = useLocation();
   const params = new URLSearchParams(search);
@@ -49,7 +51,7 @@ const Certificates: FC<TerminologyProps> = () => {
         </PDFViewer>
       </Flex>}
       {isSuccess && !data.eligible && <Flex direction="column">
-        <Text fontSize={['xl', 'xl', '4xl']} color="red.400" mb={5}>{data.message}</Text>
+        <Text fontSize={['xl', 'xl', '2xl']} color="red.400" mb={5}>{data.message}</Text>
         {data.vaccinations === 1 && <SimpleGrid columns={4} fontSize="xl">
           <Text fontWeight="bold">Current Vaccination Information</Text>
           <Flex>
@@ -77,8 +79,8 @@ const Certificates: FC<TerminologyProps> = () => {
             </Text>
           </Flex>
         </SimpleGrid>}
-        <Text fontSize={['lg', 'lg', '3xl']} fontWeight="bold" mb={5}>Please provide your details for follow up:</Text>
-        <Formik
+        <Text cursor="pointer" color="teal" fontSize={['lg', 'lg', '2xl']} fontWeight="bold" mb={5} onClick={() => setDisplayForm(!displayForm)}>Please provide your details for follow up:</Text>
+        {displayForm && <Formik
           initialValues={initialValues}
           validationSchema={ContactSchema}
           onSubmit={async (values, actions) => {
@@ -92,8 +94,8 @@ const Certificates: FC<TerminologyProps> = () => {
                 <Field name="fullName">
                   {({ field }: any) => (
                     <FormControl isInvalid={!!errors.fullName && !!touched.fullName}>
-                      <FormLabel fontSize="2xl" fontWeight="bold" htmlFor="fullName">Full Name</FormLabel>
-                      <Input size="lg" {...field} id="fullName" placeholder="Full Name" />
+                      <FormLabel fontSize="xl" fontWeight="bold" htmlFor="fullName">Full Name</FormLabel>
+                      <Input size="md" {...field} id="fullName" placeholder="Full Name" />
                       <FormErrorMessage>{errors.fullName}</FormErrorMessage>
                     </FormControl>
                   )}
@@ -101,8 +103,8 @@ const Certificates: FC<TerminologyProps> = () => {
                 <Field name="registrationId">
                   {({ field }: any) => (
                     <FormControl isInvalid={!!errors.registrationId && !!touched.registrationId}>
-                      <FormLabel fontSize="2xl" fontWeight="bold" htmlFor="registrationId">Registration Id</FormLabel>
-                      <Input size="lg" {...field} id="registrationId" placeholder="The ID used during vaccination" />
+                      <FormLabel fontSize="xl" fontWeight="bold" htmlFor="registrationId">Registration Id</FormLabel>
+                      <Input size="md" {...field} id="registrationId" placeholder="The ID used during vaccination" />
                       <FormErrorMessage>{errors.registrationId}</FormErrorMessage>
                     </FormControl>
                   )}
@@ -110,8 +112,8 @@ const Certificates: FC<TerminologyProps> = () => {
                 <Field name="cardNo">
                   {({ field }: any) => (
                     <FormControl isInvalid={!!errors.cardNo && !!touched.cardNo}>
-                      <FormLabel fontSize="2xl" fontWeight="bold" htmlFor="cardNo">Vaccination Card No</FormLabel>
-                      <Input size="lg" {...field} id="cardNo" placeholder="Vaccination Card No" />
+                      <FormLabel fontSize="xl" fontWeight="bold" htmlFor="cardNo">Vaccination Card No</FormLabel>
+                      <Input size="md" {...field} id="cardNo" placeholder="Vaccination Card No" />
                       <FormErrorMessage>{errors.cardNo}</FormErrorMessage>
                     </FormControl>
                   )}
@@ -120,8 +122,8 @@ const Certificates: FC<TerminologyProps> = () => {
                   <Field name="secondDoseDate">
                     {({ field }: any) => (
                       <FormControl isInvalid={!!errors.secondDoseDate && !!touched.secondDoseDate}>
-                        <FormLabel fontSize="2xl" fontWeight="bold" htmlFor="secondDoseDate">Date of 2nd/Last Dose</FormLabel>
-                        <Input size="lg" {...field} id="secondDoseDate" placeholder="Date of 2nd/Last Dose" />
+                        <FormLabel fontSize="xl" fontWeight="bold" htmlFor="secondDoseDate">Date of 2nd/Last Dose</FormLabel>
+                        <Input size="md" {...field} id="secondDoseDate" placeholder="Date of 2nd/Last Dose" />
                         <FormErrorMessage>{errors.secondDoseDate}</FormErrorMessage>
                       </FormControl>
                     )}
@@ -129,8 +131,8 @@ const Certificates: FC<TerminologyProps> = () => {
                   <Field name="secondDosePlace">
                     {({ field }: any) => (
                       <FormControl isInvalid={!!errors.secondDosePlace && !!touched.secondDosePlace}>
-                        <FormLabel fontSize="2xl" fontWeight="bold" htmlFor="secondDosePlace">Place of 2nd/Last Dose </FormLabel>
-                        <Input size="lg" {...field} id="secondDosePlace" placeholder="Place 2nd/Last Dose" />
+                        <FormLabel fontSize="xl" fontWeight="bold" htmlFor="secondDosePlace">Place of 2nd/Last Dose </FormLabel>
+                        <Input size="md" {...field} id="secondDosePlace" placeholder="Place 2nd/Last Dose" />
                         <FormErrorMessage>{errors.secondDosePlace}</FormErrorMessage>
                       </FormControl>
                     )}
@@ -140,8 +142,8 @@ const Certificates: FC<TerminologyProps> = () => {
                   <Field name="district">
                     {({ field }: any) => (
                       <FormControl isInvalid={!!errors.district && !!touched.district}>
-                        <FormLabel fontSize="2xl" fontWeight="bold" htmlFor="district">District</FormLabel>
-                        <Input size="lg" {...field} id="district" placeholder="District" />
+                        <FormLabel fontSize="xl" fontWeight="bold" htmlFor="district">District</FormLabel>
+                        <Input size="md" {...field} id="district" placeholder="District" />
                         <FormErrorMessage>{errors.district}</FormErrorMessage>
                       </FormControl>
                     )}
@@ -149,8 +151,8 @@ const Certificates: FC<TerminologyProps> = () => {
                   <Field name="facility">
                     {({ field }: any) => (
                       <FormControl isInvalid={!!errors.facility && !!touched.facility}>
-                        <FormLabel fontSize="2xl" fontWeight="bold" htmlFor="facility">Facility:</FormLabel>
-                        <Input size="lg" {...field} id="facility" placeholder="Facility" />
+                        <FormLabel fontSize="xl" fontWeight="bold" htmlFor="facility">Facility:</FormLabel>
+                        <Input size="md" {...field} id="facility" placeholder="Facility" />
                         <FormErrorMessage>{errors.facility}</FormErrorMessage>
                       </FormControl>
                     )}
@@ -160,8 +162,8 @@ const Certificates: FC<TerminologyProps> = () => {
                   <Field name="email">
                     {({ field }: any) => (
                       <FormControl isInvalid={!!errors.email && !!touched.email}>
-                        <FormLabel fontSize="2xl" fontWeight="bold" htmlFor="email">Email:</FormLabel>
-                        <Input size="lg" {...field} id="email" placeholder="Email" />
+                        <FormLabel fontSize="xl" fontWeight="bold" htmlFor="email">Email:</FormLabel>
+                        <Input size="md" {...field} id="email" placeholder="Email" />
                         <FormErrorMessage>{errors.email}</FormErrorMessage>
                       </FormControl>
                     )}
@@ -169,8 +171,8 @@ const Certificates: FC<TerminologyProps> = () => {
                   <Field name="phone">
                     {({ field }: any) => (
                       <FormControl isInvalid={!!errors.phone && !!touched.phone}>
-                        <FormLabel fontSize="2xl" fontWeight="bold" htmlFor="phone">Phone:</FormLabel>
-                        <Input size="lg" {...field} id="phone" placeholder="Phone" />
+                        <FormLabel fontSize="xl" fontWeight="bold" htmlFor="phone">Phone:</FormLabel>
+                        <Input size="md" {...field} id="phone" placeholder="Phone" />
                         <FormErrorMessage>{errors.phone}</FormErrorMessage>
                       </FormControl>
                     )}
@@ -178,8 +180,8 @@ const Certificates: FC<TerminologyProps> = () => {
                 </SimpleGrid>
                 <Box mt={4}>
                   <Button
-                    fontSize="2xl"
-                    size="lg"
+                    fontSize="xl"
+                    size="md"
                     colorScheme="teal"
                     isLoading={isSubmitting}
                     type="submit"
@@ -190,7 +192,7 @@ const Certificates: FC<TerminologyProps> = () => {
               </SimpleGrid>
             </Form>
           )}
-        </Formik>
+        </Formik>}
       </Flex>}
       {isError && <Box>{error?.message}</Box>}
     </Flex>
