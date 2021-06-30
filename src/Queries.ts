@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { fromPairs, max, flatten, uniq } from 'lodash';
-import { useQuery } from "react-query";
+import { differenceInDays, parseISO } from 'date-fns';
+import { flatten, fromPairs, maxBy, minBy, uniq } from 'lodash';
 import QRCode from 'qrcode';
-import { parseISO, differenceInDays } from 'date-fns';
+import { useQuery } from "react-query";
 
 // Production
 export const PROGRAM = 'yDuAzyqYABS';
@@ -30,12 +30,9 @@ const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN:
   const trackedEntityInstance = trackedEntityInstances.map((tei: any) => tei.trackedEntityInstance).join(',')
 
   const allEvents = trackedEntityInstances.map((tei: any) => {
-    const enroll = tei.enrollments.find((en: any) => en.program === PROGRAM);
-    if (enroll) {
-      return enroll.events
-    }
-    return undefined;
-  }).filter((tei: any) => tei !== undefined);
+    const enroll = tei.enrollments.filter((en: any) => en.program === PROGRAM);
+    return flatten(enroll.map((en: any) => en.events));
+  });
 
   let processedAttributes = fromPairs(attributes.map((a: any) => [a.attribute, a.value]));
 
@@ -63,9 +60,10 @@ const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN:
 
   if (processedEvents.length >= 2) {
     results = { ...results, events: processedEvents }
-    const lastDoseDate: string | undefined = max(processedEvents.map((ev: any) => ev.eventDate));
-    if (!!lastDoseDate && differenceInDays(new Date(), parseISO(lastDoseDate)) >= 14) {
-      const qr = await QRCode.toDataURL(`Name:${results.attributes[NAME_ATTRIBUTE]}\n${processedAttributes.idLabel}:${processedAttributes.idValue}\nSex:${results.attributes[SEX_ATTRIBUTE]}\nDOB:${results.attributes[DOB_ATTRIBUTE] || ' '}\nPHONE:${results.attributes[PHONE_ATTRIBUTE]}\n${processedEvents[0].bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(processedEvents[0].eventDate))},${processedEvents[0].orgUnitName},${processedEvents[0].district}\n${processedEvents[1].bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(processedEvents[1].eventDate))},${processedEvents[1].orgUnitName},${processedEvents[1].district}\n\nClick to verify\nhttps://epivac.health.go.ug/certificates/#/validate/${trackedEntityInstance}`, { margin: 0 });
+    const lastDose = maxBy(processedEvents, (e: any) => e.eventDate);
+    const firstDose = minBy(processedEvents, (e: any) => e.eventDate);
+    if (!!lastDose.eventDate && differenceInDays(new Date(), parseISO(lastDose.eventDate)) >= 14) {
+      const qr = await QRCode.toDataURL(`Name:${results.attributes[NAME_ATTRIBUTE]}\n${processedAttributes.idLabel}:${processedAttributes.idValue}\nSex:${results.attributes[SEX_ATTRIBUTE]}\nDOB:${results.attributes[DOB_ATTRIBUTE] || ' '}\nPHONE:${results.attributes[PHONE_ATTRIBUTE]}\n${firstDose.bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(firstDose.eventDate))},${firstDose.orgUnitName},${firstDose.district}\n${lastDose.bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(lastDose.eventDate))},${lastDose.orgUnitName},${lastDose.district}\n\nClick to verify\nhttps://epivac.health.go.ug/certificates/#/validate/${trackedEntityInstance}`, { margin: 0 });
       const { prints, id } = await getCertificateDetails(trackedEntityInstance);
       if (prints <= 10) {
         results = { ...results, eligible: true, qr, certificate: id };
@@ -73,8 +71,8 @@ const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN:
         results = { ...results, vaccinations: 2, message: `Your have exceeded the numbers of prints/downloads` }
       }
 
-    } else if (!!lastDoseDate) {
-      results = { ...results, message: `Your certificate is not yet ready please try again after ${14 - differenceInDays(new Date(), parseISO(lastDoseDate))} days` }
+    } else if (!!lastDose.eventDate) {
+      results = { ...results, message: `Your certificate is not yet ready please try again after ${14 - differenceInDays(new Date(), parseISO(lastDose.eventDate))} days` }
     }
   } else if (processedEvents.length === 1) {
     results = { ...results, events: processedEvents, vaccinations: 1, message: `Your may have not been fully vaccinated, current records show you have only received first dose.` }
@@ -98,13 +96,10 @@ export function useInstance(tei: string, nin: string) {
       const records: any[] = await Promise.all(allIds.map((id: string) => api.get(`trackedEntityInstances/${id}`, { params })));
       const allAttributes = fromPairs(records[0].data.attributes.map((a: any) => [a.attribute, a.value]));
 
-      const allEvents = records.map(({ data }: any) => {
-        const enroll = data.enrollments.find((en: any) => en.program === PROGRAM);
-        if (enroll) {
-          return enroll.events
-        }
-        return undefined;
-      }).filter((tei: any) => tei !== undefined);
+      const allEvents = records.map((tei: any) => {
+        const enroll = tei.enrollments.filter((en: any) => en.program === PROGRAM);
+        return flatten(enroll.map((en: any) => en.events));
+      });
       let units: any[] = []
       let processedEvents = flatten(allEvents).filter((event: any) => !!event.eventDate && event.programStage === PROGRAM_STAGE).map(({ dataValues, ...others }: any) => {
         units = [...units, others.orgUnit]
