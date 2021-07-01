@@ -57,7 +57,6 @@ const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN:
     return { ...ev, district: districts[ev.orgUnit] }
   });
 
-
   if (processedEvents.length >= 2) {
     results = { ...results, events: processedEvents }
     const lastDose = maxBy(processedEvents, (e: any) => e.eventDate);
@@ -70,12 +69,35 @@ const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN:
       } else {
         results = { ...results, vaccinations: 2, message: `Your have exceeded the numbers of prints/downloads` }
       }
-
     } else if (!!lastDose.eventDate) {
       results = { ...results, message: `Your certificate is not yet ready please try again after ${14 - differenceInDays(new Date(), parseISO(lastDose.eventDate))} days` }
     }
   } else if (processedEvents.length === 1) {
-    results = { ...results, events: processedEvents, vaccinations: 1, message: `Your may have not been fully vaccinated, current records show you have only received first dose.` }
+    const [dose] = processedEvents;
+    if (dose['LUIsbsm3okG'] === "DOSE2" && dose['vk2nF6wZwY4']) {
+      const eventDate = dose['lySxMCMSo8Z'];
+      const orgUnitName = dose['AmTw4pWCCaJ'];
+      const event = {
+        ...dose,
+        eventDate,
+        orgUnitName,
+        rpkH9ZPGJcX: '',
+        Yp1F4txx8tm: '',
+        district: ''
+      }
+      const qr = await QRCode.toDataURL(`Name:${results.attributes[NAME_ATTRIBUTE]}\n${processedAttributes.idLabel}:${processedAttributes.idValue}\nSex:${results.attributes[SEX_ATTRIBUTE]}\nDOB:${results.attributes[DOB_ATTRIBUTE] || ' '}\nPHONE:${results.attributes[PHONE_ATTRIBUTE]}\n${event.bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(event.eventDate))},${event.orgUnitName},${event.district}\n${dose.bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(dose.eventDate))},${dose.orgUnitName},${dose.district}\n\nClick to verify\nhttps://epivac.health.go.ug/certificates/#/validate/${trackedEntityInstance}`, { margin: 0 });
+      results = { ...results, events: [event, dose] }
+      const { prints, id } = await getCertificateDetails(trackedEntityInstance);
+      if (prints <= 10) {
+        results = { ...results, eligible: true, qr, certificate: id };
+      } else {
+        results = { ...results, vaccinations: 2, message: `Your have exceeded the numbers of prints/downloads` }
+      }
+    } else if (dose['LUIsbsm3okG'] === "DOSE2") {
+      results = { ...results, events: processedEvents, vaccinations: 1, message: `Your may have not been fully vaccinated, current records show you have only received second dose without first dose.` }
+    } else {
+      results = { ...results, events: processedEvents, vaccinations: 1, message: `Your may have not been fully vaccinated, current records show you have only received one dose.` }
+    }
   } else {
     results = { ...results, vaccinations: 0, message: `You have no registered vaccination information` }
   }
