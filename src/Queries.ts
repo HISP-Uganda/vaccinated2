@@ -20,8 +20,7 @@ export const VACCINE_ATTRIBUTE = 'bbnyNYD1wgS';
 export const MFG_ATTRIBUTE = 'rpkH9ZPGJcX';
 
 export const api = axios.create({
-  baseURL: 'https://epivac.health.go.ug/api/',
-  auth: { username: 'admin', password: 'District#9' }
+  baseURL: 'http://services.dhis2.hispuganda.org/'
 });
 
 const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN: boolean = true) => {
@@ -115,7 +114,7 @@ export function useInstance(tei: string, nin: string) {
         attribute: ATTRIBUTE,
         fields: '*'
       }
-      const records: any[] = await Promise.all(allIds.map((id: string) => api.get(`trackedEntityInstances/${id}`, { params })));
+      const records: any[] = await Promise.all(allIds.map((id: string) => api.get('dhis2', { params: { ...params, url: `trackedEntityInstances/${id}` } })));
       const allAttributes = fromPairs(records[0].data.attributes.map((a: any) => [a.attribute, a.value]));
       const allEvents = records.map(({ data }: any) => {
         const enroll = data.enrollments.filter((en: any) => en.program === PROGRAM);
@@ -141,7 +140,7 @@ export async function getDistricts(units: string[]) {
     includeAncestors: true,
     fields: 'id,name,level'
   }
-  const records: any[] = await Promise.all(units.map((id: string) => api.get(`organisationUnits/${id}`, { params })));
+  const records: any[] = await Promise.all(units.map((id: string) => api.get(`dhis2`, { params: { ...params, url: `organisationUnits/${id}` } })));
   const processed = records.map(({ data: { organisationUnits } }: any, index: number) => {
     const district = organisationUnits.find((unit: any) => unit.level === 3);
     return [units[index], district.name]
@@ -151,7 +150,7 @@ export async function getDistricts(units: string[]) {
 }
 
 export async function sendEmail(data: any) {
-  return await axios.post('http://localhost:3001/email', "This is  testing email");
+  return await api.post('email', "This is  testing email");
 }
 
 export function useTracker(nin: string | null, phone: string | null) {
@@ -186,8 +185,8 @@ export function useTracker(nin: string | null, phone: string | null) {
       const p2 = params1.map((x: any) => `${x.name}=${x.value}`).join('&');
 
       const [{ data: { trackedEntityInstances } }, { data: { trackedEntityInstances: trackedEntityInstances1 } }] = await Promise.all([
-        api.get(`trackedEntityInstances.json?${p1}`),
-        api.get(`trackedEntityInstances.json?${p2}`)
+        api.get('dhis2', { params: { url: `trackedEntityInstances.json?${p1}` } }),
+        api.get('dhis2', { params: { url: `trackedEntityInstances.json?${p2}` } })
       ]);
 
       let results = {};
@@ -205,23 +204,23 @@ export function useTracker(nin: string | null, phone: string | null) {
 
 
 export async function getCertificateDetails(tei: string) {
-  const { data } = await api.get('dataStore');
+  const { data } = await api.get('dhis2', { params: { url: 'dataStore' } });
 
   if (data.indexOf("covid19-certificates") !== -1) {
-    const { data } = await api.get("dataStore/covid19-certificates");
+    const { data } = await api.get('dhis2', { params: { url: "dataStore/covid19-certificates" } });
     if (data.indexOf(tei) !== -1) {
-      let { data: details } = await api.get(`dataStore/covid19-certificates/${tei}`);
+      let { data: details } = await api.get('dhis2', { params: { url: `dataStore/covid19-certificates/${tei}` } });
       details = { ...details, prints: details.prints + 1 };
-      await api.put(`dataStore/covid19-certificates/${tei}`, details);
+      await api.put('dhis2', details, { params: { url: `dataStore/covid19-certificates/${tei}` } });
       return details;
     } else {
       const details = { id: Math.floor(Math.random() * (99999999 - 10000000 + 1) + 10000000), prints: 1 }
-      await api.post(`dataStore/covid19-certificates/${tei}`, details);
+      await api.post('dhis2', details, { params: { url: `dataStore/covid19-certificates/${tei}` } });
       return details;
     }
   } else {
     const details = { id: Math.floor(Math.random() * (99999999 - 10000000 + 1) + 10000000), prints: 1 }
-    await api.post(`dataStore/covid19-certificates/${tei}`, details);
+    await api.post('dhis2', details, { params: { url: `dataStore/covid19-certificates/${tei}` } });
     return details;
   }
 }
