@@ -117,9 +117,8 @@ export function useInstance(tei: string, nin: string) {
       }
       const records: any[] = await Promise.all(allIds.map((id: string) => api.get(`trackedEntityInstances/${id}`, { params })));
       const allAttributes = fromPairs(records[0].data.attributes.map((a: any) => [a.attribute, a.value]));
-
-      const allEvents = records.map((tei: any) => {
-        const enroll = tei.enrollments.filter((en: any) => en.program === PROGRAM);
+      const allEvents = records.map(({ data }: any) => {
+        const enroll = data.enrollments.filter((en: any) => en.program === PROGRAM);
         return flatten(enroll.map((en: any) => en.events));
       });
       let units: any[] = []
