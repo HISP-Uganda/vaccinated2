@@ -20,7 +20,7 @@ export const VACCINE_ATTRIBUTE = 'bbnyNYD1wgS';
 export const MFG_ATTRIBUTE = 'rpkH9ZPGJcX';
 
 export const api = axios.create({
-  baseURL: 'http://services.dhis2.hispuganda.org/'
+  baseURL: 'https://services.dhis2.hispuganda.org/'
 });
 
 const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN: boolean = true) => {
