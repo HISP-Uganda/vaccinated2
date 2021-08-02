@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { differenceInDays, parseISO } from 'date-fns';
-import { flatten, fromPairs, maxBy, minBy, uniq } from 'lodash';
+import { flatten, fromPairs, uniq } from 'lodash';
 import QRCode from 'qrcode';
 import { useQuery } from "react-query";
 
@@ -20,7 +20,7 @@ export const VACCINE_ATTRIBUTE = 'bbnyNYD1wgS';
 export const MFG_ATTRIBUTE = 'rpkH9ZPGJcX';
 
 export const api = axios.create({
-  baseURL: 'http://localhost:3001/'
+  baseURL: 'https://services.dhis2.hispuganda.org/'
 });
 
 const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN: boolean = true) => {
@@ -56,10 +56,11 @@ const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN:
     return { ...ev, district: districts[ev.orgUnit] }
   });
 
-  if (processedEvents.length >= 2) {
-    results = { ...results, events: processedEvents }
-    const lastDose = maxBy(processedEvents, (e: any) => e.eventDate);
-    const firstDose = minBy(processedEvents, (e: any) => e.eventDate);
+  const lastDose = processedEvents.find((e: any) => e.LUIsbsm3okG === 'DOSE2');
+  const firstDose = processedEvents.find((e: any) => e.LUIsbsm3okG === 'DOSE1');
+
+  if (firstDose && lastDose) {
+    results = { ...results, events: [firstDose, lastDose] }
     if (!!lastDose.eventDate && differenceInDays(new Date(), parseISO(lastDose.eventDate)) >= 14) {
       const qr = await QRCode.toDataURL(`Name:${results.attributes[NAME_ATTRIBUTE]}\n${processedAttributes.idLabel}:${processedAttributes.idValue}\nSex:${results.attributes[SEX_ATTRIBUTE]}\nDOB:${results.attributes[DOB_ATTRIBUTE] || ' '}\nPHONE:${results.attributes[PHONE_ATTRIBUTE]}\n${firstDose.bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(firstDose.eventDate))},${firstDose.orgUnitName},${firstDose.district}\n${lastDose.bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(lastDose.eventDate))},${lastDose.orgUnitName},${lastDose.district}\n\nClick to verify\nhttps://epivac.health.go.ug/certificates/#/validate/${trackedEntityInstance}`, { margin: 0 });
       const { prints, id } = await getCertificateDetails(trackedEntityInstance);
