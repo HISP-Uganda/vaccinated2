@@ -79,7 +79,7 @@ const Certificates: FC<TerminologyProps> = () => {
             </Text>
           </Flex>
         </SimpleGrid>}
-        <Text cursor="pointer" color="teal" fontSize={['lg', 'lg', '2xl']} fontWeight="bold" mb={5} onClick={() => setDisplayForm(!displayForm)}>Please provide your details for follow up:</Text>
+        <Button size="lg" cursor="pointer" color="teal" fontSize={['lg', 'lg', '2xl']} fontWeight="bold" mb={5} onClick={() => setDisplayForm(!displayForm)}>Please click here to provide your details for follow up</Button>
         {displayForm && <Formik
           initialValues={initialValues}
           validationSchema={ContactSchema}

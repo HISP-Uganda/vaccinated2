@@ -98,6 +98,8 @@ const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN:
     } else {
       results = { ...results, events: processedEvents, vaccinations: 1, message: `Your may have not been fully vaccinated, current records show you have only received one dose.` }
     }
+  } else if (processedEvents.length > 1) {
+    results = { ...results, vaccinations: processedEvents.length, message: `You have multiple similar vaccinations` }
   } else {
     results = { ...results, vaccinations: 0, message: `You have no registered vaccination information` }
   }
