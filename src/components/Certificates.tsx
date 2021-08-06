@@ -1,8 +1,9 @@
-import { Box, Button, CircularProgress, Flex, FormControl, FormErrorMessage, FormLabel, Input, SimpleGrid, Text } from '@chakra-ui/react';
+import { Box, Button, CircularProgress, Flex, FormControl, FormErrorMessage, FormLabel, Input,Stack, SimpleGrid, Text } from '@chakra-ui/react';
 import { PDFViewer } from '@react-pdf/renderer';
 import { Field, Form, Formik } from 'formik';
 import { useState } from 'react';
-import { FC } from 'react';
+import { FC,useCallback } from 'react';
+import { useDropzone } from 'react-dropzone';
 import { useMutation } from 'react-query';
 import { useHistory, useLocation } from 'react-router';
 import * as Yup from 'yup';
@@ -32,11 +33,22 @@ const ContactSchema = Yup.object().shape({
 
 const Certificates: FC<TerminologyProps> = () => {
   const history = useHistory();
+  const [fileName, setFileName] = useState<string>('');
   const [displayForm, setDisplayForm] = useState<boolean>(false)
   const initialValues: Contact = { fullName: '', registrationId: '', secondDoseDate: '', secondDosePlace: '', cardNo: '', district: '', facility: '', phone: '', email: '' };
   const { search } = useLocation();
   const params = new URLSearchParams(search);
-  const { error, isError, isLoading, isSuccess, data } = useTracker(params.get('nin'), params.get('phone'))
+  const { error, isError, isLoading, isSuccess, data } = useTracker(params.get('nin'), params.get('phone'));
+
+  const onDrop = useCallback((acceptedFiles:any[]) => {
+    if (acceptedFiles.length > 0) {
+      const names = acceptedFiles.map((f:any)=>f.name);
+      console.log(names);
+      setFileName(names.join('\n'))
+    }
+  }, []);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, maxFiles: 3, accept: ".png, .svg, .jpg, .jpeg, .pdf" });
   const { mutate } = useMutation(sendEmail, {
   })
   return (
@@ -178,6 +190,15 @@ const Certificates: FC<TerminologyProps> = () => {
                     )}
                   </Field>
                 </SimpleGrid>
+                <Stack spacing="5">
+                  <Box>{fileName}</Box>
+                  <Box {...getRootProps()} h="100px">
+                    <input {...getInputProps()} />
+                    {
+                      isDragActive ? <p>Drop images of vaccination card/identifications document files here ...</p> : <p>Drag 'n' drop images of vaccination card/identification documents files here, or click to select files</p>
+                    }
+                  </Box>
+                </Stack>
                 <Box mt={4}>
                   <Button
                     fontSize="xl"

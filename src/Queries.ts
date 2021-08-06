@@ -64,7 +64,7 @@ const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN:
     if (!!lastDose.eventDate && differenceInDays(new Date(), parseISO(lastDose.eventDate)) >= 14) {
       const qr = await QRCode.toDataURL(`Name:${results.attributes[NAME_ATTRIBUTE]}\n${processedAttributes.idLabel}:${processedAttributes.idValue}\nSex:${results.attributes[SEX_ATTRIBUTE]}\nDOB:${results.attributes[DOB_ATTRIBUTE] || ' '}\nPHONE:${results.attributes[PHONE_ATTRIBUTE]}\n${firstDose.bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(firstDose.eventDate))},${firstDose.orgUnitName},${firstDose.district}\n${lastDose.bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(lastDose.eventDate))},${lastDose.orgUnitName},${lastDose.district}\n\nClick to verify\nhttps://epivac.health.go.ug/certificates/#/validate/${trackedEntityInstance}`, { margin: 0 });
       const { prints, id } = await getCertificateDetails(trackedEntityInstance);
-      if (prints <= 10) {
+      if (prints <= 100000) {
         results = { ...results, eligible: true, qr, certificate: id };
       } else {
         results = { ...results, vaccinations: 2, message: `Your have exceeded the numbers of prints/downloads` }
@@ -88,7 +88,7 @@ const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN:
       const qr = await QRCode.toDataURL(`Name:${results.attributes[NAME_ATTRIBUTE]}\n${processedAttributes.idLabel}:${processedAttributes.idValue}\nSex:${results.attributes[SEX_ATTRIBUTE]}\nDOB:${results.attributes[DOB_ATTRIBUTE] || ' '}\nPHONE:${results.attributes[PHONE_ATTRIBUTE]}\n${event.bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(event.eventDate))},${event.orgUnitName},${event.district}\n${dose.bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(dose.eventDate))},${dose.orgUnitName},${dose.district}\n\nClick to verify\nhttps://epivac.health.go.ug/certificates/#/validate/${trackedEntityInstance}`, { margin: 0 });
       results = { ...results, events: [event, dose] }
       const { prints, id } = await getCertificateDetails(trackedEntityInstance);
-      if (prints <= 10) {
+      if (prints <= 100000) {
         results = { ...results, eligible: true, qr, certificate: id };
       } else {
         results = { ...results, vaccinations: 2, message: `Your have exceeded the numbers of prints/downloads` }
