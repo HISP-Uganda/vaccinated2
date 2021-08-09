@@ -125,7 +125,7 @@ export const MyDocument: FC<QR> = ({ data, eventData, attributeData, certificate
                         <Text>{eventData[0].bbnyNYD1wgS}</Text>
                       </View>
 
-                      <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+                      <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text>MFG:</Text>
                         <Text style={{}}>{eventData[0].rpkH9ZPGJcX}</Text>
                       </View>
@@ -159,7 +159,7 @@ export const MyDocument: FC<QR> = ({ data, eventData, attributeData, certificate
                         <Text>{eventData[1].bbnyNYD1wgS}</Text>
                       </View>
 
-                      <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+                      <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text>MFG:</Text>
                         <Text style={{}}>{eventData[1].rpkH9ZPGJcX}</Text>
                       </View>

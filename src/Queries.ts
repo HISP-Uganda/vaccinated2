@@ -77,13 +77,15 @@ const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN:
     if (dose['LUIsbsm3okG'] === "DOSE2" && dose['vk2nF6wZwY4']) {
       const eventDate = dose['lySxMCMSo8Z'];
       const orgUnitName = dose['AmTw4pWCCaJ'];
+      const facilityDoseWasGiven = dose['X7tI86pr1y0'] || dose['OW3erclrDW8']
       const event = {
         ...dose,
+        bbnyNYD1wgS: 'N/A',
         eventDate,
-        orgUnitName,
-        rpkH9ZPGJcX: '',
-        Yp1F4txx8tm: '',
-        district: ''
+        orgUnitName: `${orgUnitName}(${facilityDoseWasGiven})`,
+        rpkH9ZPGJcX: 'N/A',
+        Yp1F4txx8tm: 'N/A',
+        district: 'N/A'
       }
       const qr = await QRCode.toDataURL(`Name:${results.attributes[NAME_ATTRIBUTE]}\n${processedAttributes.idLabel}:${processedAttributes.idValue}\nSex:${results.attributes[SEX_ATTRIBUTE]}\nDOB:${results.attributes[DOB_ATTRIBUTE] || ' '}\nPHONE:${results.attributes[PHONE_ATTRIBUTE]}\n${event.bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(event.eventDate))},${event.orgUnitName},${event.district}\n${dose.bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(dose.eventDate))},${dose.orgUnitName},${dose.district}\n\nClick to verify\nhttps://epivac.health.go.ug/certificates/#/validate/${trackedEntityInstance}`, { margin: 0 });
       results = { ...results, events: [event, dose] }
