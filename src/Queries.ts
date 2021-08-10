@@ -45,7 +45,7 @@ const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN:
 
   let units: any[] = []
 
-  let processedEvents = flatten(allEvents).filter((event: any) => !!event.eventDate && event.programStage === PROGRAM_STAGE).map(({ dataValues, ...others }: any) => {
+  let processedEvents = flatten(allEvents).filter((event: any) => !!event.eventDate && event.deleted === false && event.programStage === PROGRAM_STAGE).map(({ dataValues, ...others }: any) => {
     units = [...units, others.orgUnit]
     return { ...others, ...fromPairs(dataValues.map((dv: any) => [dv.dataElement, dv.value])) };
   });
@@ -125,8 +125,8 @@ export function useInstance(tei: string, nin: string) {
         const enroll = data.enrollments.filter((en: any) => en.program === PROGRAM);
         return flatten(enroll.map((en: any) => en.events));
       });
-      let units: any[] = []
-      let processedEvents = flatten(allEvents).filter((event: any) => !!event.eventDate && event.programStage === PROGRAM_STAGE).map(({ dataValues, ...others }: any) => {
+      let units: any[] = [];
+      let processedEvents = flatten(allEvents).filter((event: any) =>  !!event.eventDate && event.deleted === false && event.programStage === PROGRAM_STAGE).map(({ dataValues, ...others }: any) => {
         units = [...units, others.orgUnit]
         return { ...others, ...fromPairs(dataValues.map((dv: any) => [dv.dataElement, dv.value])) }
       });
