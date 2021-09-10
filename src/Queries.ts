@@ -28,7 +28,7 @@ export const ELSEWHERE_MAN = 'taGJD9hkX0s';
 export const ELSEWHERE_BATCH = 'muCgXjnCfnS';
 
 export const api = axios.create({
-  baseURL: '  '
+  baseURL: 'https://services.dhis2.hispuganda.org/'
 });
 
 const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN: boolean = true) => {
