@@ -18,9 +18,17 @@ export const PHONE_ATTRIBUTE = 'ciCR6BBvIT4';
 export const BATCH_ATTRIBUTE = 'Yp1F4txx8tm';
 export const VACCINE_ATTRIBUTE = 'bbnyNYD1wgS';
 export const MFG_ATTRIBUTE = 'rpkH9ZPGJcX';
+export const ELSEWHERE_DATE = 'lySxMCMSo8Z';
+export const ELSEWHERE_IN_COUNTRY_DISTRICT = 'ObwW38YrQHu';
+export const ELSEWHERE_IN_COUNTRY_FACILITY = 'X7tI86pr1y0';
+export const ELSEWHERE_OUT_COUNTRY = 'ONsseOxElW9';
+export const ELSEWHERE_OUT_COUNTRY_FACILITY = 'OW3erclrDW8';
+export const ELSEWHERE_VACCINE = 'wwX1eEiYLGR';
+export const ELSEWHERE_MAN = 'taGJD9hkX0s';
+export const ELSEWHERE_BATCH = 'muCgXjnCfnS';
 
 export const api = axios.create({
-  baseURL: 'https://services.dhis2.hispuganda.org/'
+  baseURL: '  '
 });
 
 const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN: boolean = true) => {
@@ -80,12 +88,12 @@ const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN:
       const facilityDoseWasGiven = dose['X7tI86pr1y0'] || dose['OW3erclrDW8']
       const event = {
         ...dose,
-        bbnyNYD1wgS: 'N/A',
+        bbnyNYD1wgS: dose[ELSEWHERE_VACCINE] || '',
         eventDate,
         orgUnitName: `${orgUnitName}(${facilityDoseWasGiven})`,
-        rpkH9ZPGJcX: 'N/A',
-        Yp1F4txx8tm: 'N/A',
-        district: 'N/A'
+        rpkH9ZPGJcX: dose[ELSEWHERE_MAN] || '',
+        Yp1F4txx8tm: dose[ELSEWHERE_BATCH] || '',
+        district: dose[ELSEWHERE_IN_COUNTRY_DISTRICT] || dose[ELSEWHERE_OUT_COUNTRY]
       }
       const qr = await QRCode.toDataURL(`Name:${results.attributes[NAME_ATTRIBUTE]}\n${processedAttributes.idLabel}:${processedAttributes.idValue}\nSex:${results.attributes[SEX_ATTRIBUTE]}\nDOB:${results.attributes[DOB_ATTRIBUTE] || ' '}\nPHONE:${results.attributes[PHONE_ATTRIBUTE]}\n${event.bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(event.eventDate))},${event.orgUnitName},${event.district}\n${dose.bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(dose.eventDate))},${dose.orgUnitName},${dose.district}\n\nClick to verify\nhttps://epivac.health.go.ug/certificates/#/validate/${trackedEntityInstance}`, { margin: 0 });
       results = { ...results, events: [event, dose] }
@@ -126,7 +134,7 @@ export function useInstance(tei: string, nin: string) {
         return flatten(enroll.map((en: any) => en.events));
       });
       let units: any[] = [];
-      let processedEvents = flatten(allEvents).filter((event: any) =>  !!event.eventDate && event.deleted === false && event.programStage === PROGRAM_STAGE).map(({ dataValues, ...others }: any) => {
+      let processedEvents = flatten(allEvents).filter((event: any) => !!event.eventDate && event.deleted === false && event.programStage === PROGRAM_STAGE).map(({ dataValues, ...others }: any) => {
         units = [...units, others.orgUnit]
         return { ...others, ...fromPairs(dataValues.map((dv: any) => [dv.dataElement, dv.value])) }
       });
