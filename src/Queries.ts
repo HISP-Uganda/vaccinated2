@@ -84,13 +84,12 @@ const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN:
     const [dose] = processedEvents;
     if (dose['LUIsbsm3okG'] === "DOSE2" && dose['vk2nF6wZwY4']) {
       const eventDate = dose['lySxMCMSo8Z'];
-      const orgUnitName = dose['AmTw4pWCCaJ'];
       const facilityDoseWasGiven = dose['X7tI86pr1y0'] || dose['OW3erclrDW8']
       const event = {
         ...dose,
         bbnyNYD1wgS: dose[ELSEWHERE_VACCINE] || '',
         eventDate,
-        orgUnitName: `${orgUnitName}(${facilityDoseWasGiven})`,
+        orgUnitName: `${facilityDoseWasGiven}`,
         rpkH9ZPGJcX: dose[ELSEWHERE_MAN] || '',
         Yp1F4txx8tm: dose[ELSEWHERE_BATCH] || '',
         district: dose[ELSEWHERE_IN_COUNTRY_DISTRICT] || dose[ELSEWHERE_OUT_COUNTRY]
