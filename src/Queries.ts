@@ -162,7 +162,9 @@ export async function getDistricts(units: string[]) {
 }
 
 export async function sendEmail(data: any) {
-  return await api.post('email', "This is  testing email");
+  await api.post('feedbacks', data)
+  // api.post('email', "This is  testing email");
+  return true
 }
 
 export function useTracker(nin: string | null, phone: string | null) {
