@@ -288,3 +288,13 @@ export function useQRCode(text: string) {
     },
   );
 }
+
+
+export function useFeedbacks(page: number, pageSize: number) {
+  return useQuery<any, Error>(
+    ['feedbacks', page, pageSize],
+    async () => {
+      return await api.get("feedbacks", { params: { page, pageSize } })
+    },
+  );
+}
