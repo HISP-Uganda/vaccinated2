@@ -6,21 +6,21 @@ const ArmedForces = () => {
   const history = useHistory();
 
   const [nin, setNin] = useState<string>('');
-  const [phoneNumber, setPhoneNumber] = useState<string>('');
+  // const [phoneNumber, setPhoneNumber] = useState<string>('');
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNin(e.target.value);
   }
 
-  const onChange1 = (e: ChangeEvent<HTMLInputElement>) => {
-    setPhoneNumber(e.target.value);
-  }
+  // const onChange1 = (e: ChangeEvent<HTMLInputElement>) => {
+  //   setPhoneNumber(e.target.value);
+  // }
 
   const search = () => {
-    if (!!nin && !!phoneNumber) {
+    if (!!nin) {
       const params = new URLSearchParams();
       params.append('identifier', nin);
-      params.append('phone', phoneNumber);
+      // params.append('phone', phoneNumber);
       history.push({ pathname: '/generate2', search: params.toString() })
     }
   }
@@ -62,10 +62,10 @@ const ArmedForces = () => {
           <Box fontSize="xl" fontWeight="black">Registered ID</Box>
           <Input border="4px" borderColor="blue.100" placeholder="Enter Registration ID" onChange={onChange} value={nin} size="lg" />
         </Stack>
-        <Stack>
+        {/* <Stack>
           <Box fontSize="xl" fontWeight="black">Last 6 digits of your registered phone number</Box>
           <Input border="4px" borderColor="blue.100" placeholder="Last Six(6) digits of your phone" onChange={onChange1} value={phoneNumber} size="lg" />
-        </Stack>
+        </Stack> */}
         <VStack><Button size="lg" bg="blue.600" color="white" textTransform="uppercase" onClick={search}>Generate Certificate</Button></VStack>
       </Stack>
     </Flex>
