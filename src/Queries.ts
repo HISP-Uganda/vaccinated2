@@ -13,7 +13,7 @@ export const PROGRAM_STAGE = 'a1jCssI2LkW';
 export const OTHER_ID = 'YvnFn4IjKzx';
 export const VACCINATION_CARD_NO = 'hDdStedsrHN';
 export const SEX_ATTRIBUTE = 'FZzQbW8AWVd';
-export const DOB_ATTRIBUTE = 'mAWcalQYYyk';
+export const DOB_ATTRIBUTE = 'NI0QRzJvQ0k';
 export const PHONE_ATTRIBUTE = 'ciCR6BBvIT4';
 export const BATCH_ATTRIBUTE = 'Yp1F4txx8tm';
 export const VACCINE_ATTRIBUTE = 'bbnyNYD1wgS';
@@ -69,7 +69,7 @@ const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN:
 
   if (firstDose && lastDose) {
     results = { ...results, events: [firstDose, lastDose] }
-    if (!!lastDose.eventDate && differenceInDays(new Date(), parseISO(lastDose.eventDate)) >= 14) {
+    if (!!lastDose.eventDate && differenceInDays(new Date(), parseISO(lastDose.eventDate)) >= 7) {
       const qr = await QRCode.toDataURL(`Name:${results.attributes[NAME_ATTRIBUTE]}\n${processedAttributes.idLabel}:${processedAttributes.idValue}\nSex:${results.attributes[SEX_ATTRIBUTE]}\nDOB:${results.attributes[DOB_ATTRIBUTE] || ' '}\nPHONE:${results.attributes[PHONE_ATTRIBUTE]}\n${firstDose.bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(firstDose.eventDate))},${firstDose.orgUnitName},${firstDose.district}\n${lastDose.bbnyNYD1wgS}:${new Intl.DateTimeFormat('fr').format(Date.parse(lastDose.eventDate))},${lastDose.orgUnitName},${lastDose.district}\n\nClick to verify\nhttps://epivac.health.go.ug/certificates/#/validate/${trackedEntityInstance}`, { margin: 0 });
       const { prints, id } = await getCertificateDetails(trackedEntityInstance);
       if (prints <= 100000) {
@@ -78,7 +78,7 @@ const processTrackedEntityInstances = async (trackedEntityInstances: any, byNIN:
         results = { ...results, vaccinations: 2, message: `Your have exceeded the numbers of prints/downloads` }
       }
     } else if (!!lastDose.eventDate) {
-      results = { ...results, message: `Your certificate is not yet ready please try again after ${14 - differenceInDays(new Date(), parseISO(lastDose.eventDate))} days` }
+      results = { ...results, message: `Your certificate is not yet ready please try again after ${7 - differenceInDays(new Date(), parseISO(lastDose.eventDate))} days` }
     }
   } else if (processedEvents.length === 1) {
     const [dose] = processedEvents;
@@ -147,6 +147,37 @@ export function useInstance(tei: string, nin: string) {
   );
 }
 
+export function useArmedInstance(tei: string, nin: string) {
+  const allIds = tei.split(",");
+  return useQuery<any, Error>(
+    ['instance', tei],
+    async () => {
+      const params: any = {
+        program: PROGRAM,
+        attribute: ATTRIBUTE,
+        fields: '*'
+      }
+      const records: any[] = await Promise.all(allIds.map((id: string) => api.get('dhis2', { params: { ...params, url: `trackedEntityInstances/${id}` } })));
+      const allAttributes = fromPairs(records[0].data.attributes.map((a: any) => [a.attribute, a.value]));
+      const allEvents = records.map(({ data }: any) => {
+        const enroll = data.enrollments.filter((en: any) => en.program === PROGRAM);
+        return flatten(enroll.map((en: any) => en.events));
+      });
+      let units: any[] = [];
+      let processedEvents = flatten(allEvents).filter((event: any) => !!event.eventDate && event.deleted === false && event.programStage === PROGRAM_STAGE).map(({ dataValues, ...others }: any) => {
+        units = [...units, others.orgUnit]
+        return { ...others, ...fromPairs(dataValues.map((dv: any) => [dv.dataElement, dv.value])) }
+      });
+      const districts = await getDistricts(uniq(units));
+
+      processedEvents = processedEvents.map((ev: any) => {
+        return { ...ev, district: districts[ev.orgUnit] }
+      })
+      return { ...allAttributes, ...processedEvents };
+    }
+  );
+}
+
 export async function getDistricts(units: string[]) {
   const params = {
     includeAncestors: true,
@@ -163,8 +194,17 @@ export async function getDistricts(units: string[]) {
 
 export async function sendEmail(data: any) {
   await api.post('feedbacks', data)
-  // api.post('email', "This is  testing email");
   return true
+}
+
+export function useArmedTracker(identifier: string | null, phone: string | null) {
+  return useQuery<any, Error>(
+    ['certificate', identifier, phone],
+    async () => {
+      const { data } = await api.get('certificates', { params: { identifier, phone } });
+      return data;
+    },
+  );
 }
 
 export function useTracker(nin: string | null, phone: string | null) {
