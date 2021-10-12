@@ -7,7 +7,7 @@ import {
 import { FC } from 'react';
 import mohImage from '../moh.png';
 import sig from '../sig.png';
-import { NAME_ATTRIBUTE, VACCINATION_CARD_NO } from '../Queries';
+import { NAME_ATTRIBUTE, VACCINATION_CARD_NO, DOB_ATTRIBUTE } from '../Queries';
 
 interface QR {
   data: any,
@@ -100,7 +100,8 @@ export const MyDocument: FC<QR> = ({ data, eventData, attributeData, certificate
                 {/* </View> */}
                 <Text style={{ margin: 30, textAlign: 'center' }}>
                   This is to Certify that
-                  <Text style={{ fontWeight: 'black', textTransform: 'uppercase', fontFamily: 'Helvetica-Bold' }}> {attributeData[NAME_ATTRIBUTE]} ({attributeData.idValue}) </Text>
+                  <Text style={{ fontWeight: 'black', textTransform: 'uppercase', fontFamily: 'Helvetica-Bold' }}> {attributeData[NAME_ATTRIBUTE]} ({attributeData.idValue}) </Text>born on
+                  <Text style={{ fontWeight: 'black', textTransform: 'uppercase', fontFamily: 'Helvetica-Bold' }}> {(new Date(attributeData[DOB_ATTRIBUTE])).toDateString()} </Text>
                   was vaccinated against COVID-19 as shown below
                 </Text>
               </View>
