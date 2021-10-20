@@ -10,9 +10,6 @@ import Certificates from './Certificates';
 import Home from "./Home";
 import Validate from "./Validate";
 import Contact from './Contact';
-import ArmedCertificates from "./ArmedCertificates";
-import ArmedForces from "./ArmedForces";
-import ValidateForces from "./ValidateForces";
 
 const App = () => (
   <Router>
@@ -28,20 +25,11 @@ const App = () => (
           <Route path="/validate/:tei" exact>
             <Validate />
           </Route>
-          <Route path="/validate2/:tei" exact>
-            <ValidateForces />
-          </Route>
           <Route path="/generate" exact>
             <Certificates />
           </Route>
-          <Route path="/generate2" exact>
-            <ArmedCertificates />
-          </Route>
           <Route path="/contact" exact>
             <Contact />
-          </Route>
-          <Route path="/armed-forces">
-            <ArmedForces />
           </Route>
           <Route path="/" exact>
             <Home />

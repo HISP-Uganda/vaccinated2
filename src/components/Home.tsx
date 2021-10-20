@@ -19,14 +19,18 @@ const Home = () => {
   const search = () => {
     if (!!nin && !!phoneNumber) {
       const params = new URLSearchParams();
-      params.append('nin', nin);
+      // params.append('nin', nin);
+      // params.append('phone', phoneNumber);
+      // history.push({ pathname: '/generate', search: params.toString() })
+
+      params.append('identifier', nin);
       params.append('phone', phoneNumber);
       history.push({ pathname: '/generate', search: params.toString() })
     }
   }
   return (
     <Flex h="100%" direction={["column", "column", "row"]} p={["5", "5", "none"]}>
-      <Box width={["100%", "100%", "70%"]}  fontSize={["lg", "lg", "xl"]}>
+      <Box width={["100%", "100%", "70%"]} fontSize={["lg", "lg", "xl"]}>
         <Heading as="h4" size="lg" my={6}>Welcome to Uganda National COVID-19 Vaccination Certification Portal</Heading>
         <Box my={4} textAlign="justify">This Portal is Uganda's Official online public COVID-19 Vaccination Certificate and Verification Platform.</Box>
         <Box my={4} textAlign="justify">
@@ -50,7 +54,7 @@ const Home = () => {
           </ListItem>
         </UnorderedList>
         <Heading as="h5" size="lg" my={4}>Support</Heading>
-        <Flex justifyContent={[null,null,"space-between"]} direction={["column","column","row"]}>
+        <Flex justifyContent={[null, null, "space-between"]} direction={["column", "column", "row"]}>
           <Flex direction="column"><Text>Contact the COVID-19 Vaccination Support team</Text> <Link color="teal.500" href="mailto: unepi@health.go.ug">unepi@health.go.ug</Link></Flex>
           <Flex direction="column"><Text>Call Center Toll Free Numbers:</Text> <Text color="teal.500">0800-230-033/0800-100-066/0800-303-033</Text></Flex>
         </Flex>

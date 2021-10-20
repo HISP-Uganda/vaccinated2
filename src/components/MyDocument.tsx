@@ -11,9 +11,6 @@ import { NAME_ATTRIBUTE, VACCINATION_CARD_NO, DOB_ATTRIBUTE } from '../Queries';
 
 interface QR {
   data: any,
-  attributeData: any;
-  eventData: any;
-  trackedEntityInstance: string;
   certificate: string;
 }
 
@@ -59,7 +56,7 @@ const styles = StyleSheet.create({
 });
 
 // Create Document Component
-export const MyDocument: FC<QR> = ({ data, eventData, attributeData, certificate }) => {
+export const MyDocument: FC<QR> = ({ data, certificate }) => {
   return (
     <Document>
       <Page size="A4" style={styles.body} orientation="landscape">
@@ -88,7 +85,7 @@ export const MyDocument: FC<QR> = ({ data, eventData, attributeData, certificate
                   <View style={{ width: '30%', textAlign: 'right' }}>
                     <View>
                       <Text>Card No:</Text>
-                      <Text style={{ fontFamily: 'Times-Italic', color: 'red' }}>{attributeData[VACCINATION_CARD_NO]}</Text>
+                      <Text style={{ fontFamily: 'Times-Italic', color: 'red' }}>{data[VACCINATION_CARD_NO]}</Text>
                     </View>
                   </View>
                 </View>
@@ -100,9 +97,8 @@ export const MyDocument: FC<QR> = ({ data, eventData, attributeData, certificate
                 {/* </View> */}
                 <Text style={{ margin: 30, textAlign: 'center' }}>
                   This is to Certify that
-                  <Text style={{ fontWeight: 'black', textTransform: 'uppercase', fontFamily: 'Helvetica-Bold' }}> {attributeData[NAME_ATTRIBUTE]} ({attributeData.idValue}) </Text>born on
-                  <Text style={{ fontWeight: 'black', textTransform: 'uppercase', fontFamily: 'Helvetica-Bold' }}> {(new Date(attributeData[DOB_ATTRIBUTE])).toDateString()} </Text>
-                  was vaccinated against COVID-19 as shown below
+                  <Text style={{ fontWeight: 'black', textTransform: 'uppercase', fontFamily: 'Helvetica-Bold' }}> {data[NAME_ATTRIBUTE]} ({data.id}) </Text>
+                  born on <Text style={{ fontWeight: 'black', textTransform: 'uppercase', fontFamily: 'Helvetica-Bold' }}> {(new Date(data[DOB_ATTRIBUTE])).toDateString()} </Text> was vaccinated against COVID-19 as shown below
                 </Text>
               </View>
               <View style={styles.table}>
@@ -114,29 +110,29 @@ export const MyDocument: FC<QR> = ({ data, eventData, attributeData, certificate
                     <View style={{ display: 'flex', padding: 10 }}>
                       <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text>Date:</Text>
-                        <Text>{new Intl.DateTimeFormat('fr').format(Date.parse(eventData[0].eventDate))}</Text>
+                        <Text>{new Intl.DateTimeFormat('fr').format(Date.parse(data.DOSE1.eventDate))}</Text>
                       </View>
 
                       <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text>Batch No:</Text>
-                        <Text>{eventData[0].Yp1F4txx8tm}</Text>
+                        <Text>{data.DOSE1.Yp1F4txx8tm}</Text>
                       </View>
                       <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text>Vaccine:</Text>
-                        <Text>{eventData[0].bbnyNYD1wgS}</Text>
+                        <Text>{data.DOSE1.bbnyNYD1wgS}</Text>
                       </View>
 
                       <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text>MFG:</Text>
-                        <Text style={{}}>{eventData[0].rpkH9ZPGJcX}</Text>
+                        <Text style={{}}>{data.DOSE1.rpkH9ZPGJcX}</Text>
                       </View>
                       <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text>Facility:</Text>
-                        <Text style={{ flex: 1, textAlign: 'right' }}>{eventData[0].orgUnitName}</Text>
+                        <Text style={{ flex: 1, textAlign: 'right' }}>{data.DOSE1.orgUnitName}</Text>
                       </View>
                       <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text >District:</Text>
-                        <Text style={{ flex: 1, textAlign: 'right' }}>{eventData[0].district}</Text>
+                        <Text style={{ flex: 1, textAlign: 'right' }}>{data.DOSE1.districtName}</Text>
                       </View>
                     </View>
                   </View>
@@ -148,29 +144,29 @@ export const MyDocument: FC<QR> = ({ data, eventData, attributeData, certificate
                     <View style={{ display: 'flex', padding: 10 }}>
                       <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text>Date:</Text>
-                        <Text>{new Intl.DateTimeFormat('fr').format(Date.parse(eventData[1].eventDate))}</Text>
+                        <Text>{new Intl.DateTimeFormat('fr').format(Date.parse(data.DOSE2.eventDate))}</Text>
                       </View>
 
                       <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text>Batch No:</Text>
-                        <Text>{eventData[1].Yp1F4txx8tm}</Text>
+                        <Text>{data.DOSE2.Yp1F4txx8tm}</Text>
                       </View>
                       <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text>Vaccine:</Text>
-                        <Text>{eventData[1].bbnyNYD1wgS}</Text>
+                        <Text>{data.DOSE2.bbnyNYD1wgS}</Text>
                       </View>
 
                       <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text>MFG:</Text>
-                        <Text style={{}}>{eventData[1].rpkH9ZPGJcX}</Text>
+                        <Text style={{}}>{data.DOSE2.rpkH9ZPGJcX}</Text>
                       </View>
                       <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text >Facility:</Text>
-                        <Text style={{ flex: 1, textAlign: 'right' }}>{eventData[1].orgUnitName}</Text>
+                        <Text style={{ flex: 1, textAlign: 'right' }}>{data.DOSE2.orgUnitName}</Text>
                       </View>
                       <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text >District:</Text>
-                        <Text style={{ flex: 1, textAlign: 'right' }}>{eventData[1].district}</Text>
+                        <Text style={{ flex: 1, textAlign: 'right' }}>{data.DOSE2.districtName}</Text>
                       </View>
                     </View>
                   </View>
@@ -178,7 +174,7 @@ export const MyDocument: FC<QR> = ({ data, eventData, attributeData, certificate
                 <View style={{ flex: 1, display: 'flex', alignContent: 'center', alignItems: 'center', justifyContent: 'center' }}>
                   <Image
                     style={{ width: 150, height: 150 }}
-                    src={data}
+                    src={data.qr}
                   />
                 </View>
               </View>
@@ -201,7 +197,6 @@ export const MyDocument: FC<QR> = ({ data, eventData, attributeData, certificate
             </View>
           </View>
         </View>
-
       </Page>
     </Document>
   )

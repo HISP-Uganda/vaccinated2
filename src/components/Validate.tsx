@@ -1,12 +1,12 @@
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import { useParams } from "react-router-dom";
-import { useInstance, VACCINATION_CARD_NO, NAME_ATTRIBUTE, OTHER_ID, NIN_ATTRIBUTE } from '../Queries';
+import { useInstance, VACCINATION_CARD_NO, NAME_ATTRIBUTE, OTHER_ID, NIN_ATTRIBUTE, DOB_ATTRIBUTE } from '../Queries';
 import { SimpleGrid } from '@chakra-ui/react';
 
 type ParamProps = {
   tei: string
 }
-const Validate = () => {
+const ValidateForces = () => {
   const { tei } = useParams<ParamProps>();
   const { isError, isSuccess, isLoading, data } = useInstance(tei, 'XXXX')
   return (
@@ -27,6 +27,10 @@ const Validate = () => {
             <Text fontWeight="bold">Registration ID:</Text>
             <Text pl={[null, null, "10px"]}>{data[NIN_ATTRIBUTE] || data[OTHER_ID]}</Text>
           </Flex>
+          <Flex justifyContent="space-between" direction={["column", "column", "row"]}>
+            <Text fontWeight="bold">Date of Birth:</Text>
+            <Text pl={[null, null, "10px"]}>{data[DOB_ATTRIBUTE] || data[OTHER_ID]}</Text>
+          </Flex>
         </Flex>
         <Flex direction="column" mt="10">
           <Text bg="yellow.300" mb="10px">Vaccination Details</Text>
@@ -35,54 +39,54 @@ const Validate = () => {
               <Text bg="gray.200">Dose1</Text>
               <Flex justifyContent="space-between" direction={["column", "column", "row"]}>
                 <Text fontWeight="bold">Date:</Text>
-                <Text pl={[null, null, "10px"]}>{new Intl.DateTimeFormat('fr').format(Date.parse(data["0"].eventDate))}</Text>
+                <Text pl={[null, null, "10px"]}>{new Intl.DateTimeFormat('fr').format(Date.parse(data.DOSE1.eventDate))}</Text>
               </Flex>
               <Flex justifyContent="space-between" direction={["column", "column", "row"]}>
                 <Text fontWeight="bold">Batch No:</Text>
-                <Text pl={[null, null, "10px"]}>{data["0"].Yp1F4txx8tm}</Text>
+                <Text pl={[null, null, "10px"]}>{data.DOSE1.Yp1F4txx8tm}</Text>
               </Flex>
               <Flex justifyContent="space-between" direction={["column", "column", "row"]}>
                 <Text fontWeight="bold">Vaccine:</Text>
-                <Text pl={[null, null, "10px"]}>{data["0"].bbnyNYD1wgS}</Text>
+                <Text pl={[null, null, "10px"]}>{data.DOSE1.bbnyNYD1wgS}</Text>
               </Flex>
               <Flex justifyContent="space-between" direction={["column", "column", "row"]}>
                 <Text fontWeight="bold">MFG:</Text>
-                <Text pl={[null, null, "10px"]}>{data["0"].rpkH9ZPGJcX}</Text>
+                <Text pl={[null, null, "10px"]}>{data.DOSE1.rpkH9ZPGJcX}</Text>
               </Flex>
               <Flex justifyContent="space-between" direction={["column", "column", "row"]}>
                 <Text fontWeight="bold">Facility:</Text>
-                <Text pl={[null, null, "10px"]}>{data["0"].orgUnitName}</Text>
+                <Text pl={[null, null, "10px"]}>{data.DOSE1.orgUnitName}</Text>
               </Flex>
               <Flex justifyContent="space-between" direction={["column", "column", "row"]}>
                 <Text fontWeight="bold">District:</Text>
-                <Text pl={[null, null, "10px"]}>{data["0"].district}</Text>
+                <Text pl={[null, null, "10px"]}>{data.DOSE1.districtName}</Text>
               </Flex>
             </Flex>
             <Flex direction="column" border="1px solid gray" p="5px">
               <Text bg="gray.200">Dose2</Text>
               <Flex justifyContent="space-between" direction={["column", "column", "row"]}>
                 <Text fontWeight="bold">Date:</Text>
-                <Text pl={[null, null, "10px"]}>{new Intl.DateTimeFormat('fr').format(Date.parse(data["1"].eventDate))}</Text>
+                <Text pl={[null, null, "10px"]}>{new Intl.DateTimeFormat('fr').format(Date.parse(data.DOSE2.eventDate))}</Text>
               </Flex>
               <Flex justifyContent="space-between" direction={["column", "column", "row"]}>
                 <Text fontWeight="bold">Batch No:</Text>
-                <Text pl={[null, null, "10px"]}>{data["1"].Yp1F4txx8tm}</Text>
+                <Text pl={[null, null, "10px"]}>{data.DOSE2.Yp1F4txx8tm}</Text>
               </Flex>
               <Flex justifyContent="space-between" direction={["column", "column", "row"]}>
                 <Text fontWeight="bold">Vaccine:</Text>
-                <Text pl={[null, null, "10px"]}>{data["1"].bbnyNYD1wgS}</Text>
+                <Text pl={[null, null, "10px"]}>{data.DOSE2.bbnyNYD1wgS}</Text>
               </Flex>
               <Flex justifyContent="space-between" direction={["column", "column", "row"]}>
                 <Text fontWeight="bold">MFG:</Text>
-                <Text pl={[null, null, "10px"]}>{data["1"].rpkH9ZPGJcX}</Text>
+                <Text pl={[null, null, "10px"]}>{data.DOSE2.rpkH9ZPGJcX}</Text>
               </Flex>
               <Flex justifyContent="space-between" direction={["column", "column", "row"]}>
                 <Text fontWeight="bold">Facility:</Text>
-                <Text pl={[null, null, "10px"]}>{data["1"].orgUnitName}</Text>
+                <Text pl={[null, null, "10px"]}>{data.DOSE2.orgUnitName}</Text>
               </Flex>
               <Flex justifyContent="space-between" direction={["column", "column", "row"]}>
                 <Text fontWeight="bold">District:</Text>
-                <Text pl={[null, null, "10px"]}>{data["1"].district}</Text>
+                <Text pl={[null, null, "10px"]}>{data.DOSE2.districtName}</Text>
               </Flex>
             </Flex>
           </SimpleGrid>
@@ -93,4 +97,4 @@ const Validate = () => {
   )
 }
 
-export default Validate
+export default ValidateForces

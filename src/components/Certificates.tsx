@@ -1,8 +1,7 @@
-import { Box, Button, CircularProgress, Flex, FormControl, FormErrorMessage, FormLabel, Input,Stack, SimpleGrid, Text } from '@chakra-ui/react';
+import { Box, Button, CircularProgress, Flex, FormControl, FormErrorMessage, FormLabel, Input, SimpleGrid, Stack, Text } from '@chakra-ui/react';
 import { PDFViewer } from '@react-pdf/renderer';
 import { Field, Form, Formik } from 'formik';
-import { useState } from 'react';
-import { FC,useCallback } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useMutation } from 'react-query';
 import { useHistory, useLocation } from 'react-router';
@@ -38,12 +37,11 @@ const Certificates: FC<TerminologyProps> = () => {
   const initialValues: Contact = { fullName: '', registrationId: '', secondDoseDate: '', secondDosePlace: '', cardNo: '', district: '', facility: '', phone: '', email: '' };
   const { search } = useLocation();
   const params = new URLSearchParams(search);
-  const { error, isError, isLoading, isSuccess, data } = useTracker(params.get('nin'), params.get('phone'));
+  const { error, isError, isLoading, isSuccess, data } = useTracker(params.get('identifier'), params.get('phone'));
 
-  const onDrop = useCallback((acceptedFiles:any[]) => {
+  const onDrop = useCallback((acceptedFiles: any[]) => {
     if (acceptedFiles.length > 0) {
-      const names = acceptedFiles.map((f:any)=>f.name);
-      console.log(names);
+      const names = acceptedFiles.map((f: any) => f.name);
       setFileName(names.join('\n'))
     }
   }, []);
@@ -57,21 +55,21 @@ const Certificates: FC<TerminologyProps> = () => {
         <CircularProgress isIndeterminate color="blue.700" />
       </Box>}
       {isSuccess && data.eligible && <Flex direction="column" width="100%" height="100%">
-        <Button onClick={() => history.push("/")}>Back</Button>
+        <Button onClick={() => history.push("/armed-forces")}>Back</Button>
         <PDFViewer width="100%" height="100%">
-          <MyDocument data={data.qr} trackedEntityInstance={data.trackedEntityInstance} attributeData={data.attributes} eventData={data.events} certificate={data.certificate} />
+          <MyDocument data={data} certificate={data.certificate} />
         </PDFViewer>
       </Flex>}
       {isSuccess && !data.eligible && <Flex direction="column">
         <Text fontSize={['xl', 'xl', '2xl']} color="red.400" mb={5}>{data.message}</Text>
-        {data.vaccinations === 1 && <SimpleGrid columns={4} fontSize="xl">
+        {!!data.DOSE1 && <SimpleGrid columns={4} fontSize="xl">
           <Text fontWeight="bold">Current Vaccination Information</Text>
           <Flex>
             <Text fontWeight="bold">
               Vaccine:
             </Text>
             <Text pl="5px">
-              {data.events[0].bbnyNYD1wgS}
+              {data.DOSE1.bbnyNYD1wgS}
             </Text>
           </Flex>
           <Flex>
@@ -79,7 +77,7 @@ const Certificates: FC<TerminologyProps> = () => {
               Date:
             </Text>
             <Text pl="5px">
-              {new Intl.DateTimeFormat('fr').format(Date.parse(data.events[0].eventDate))}
+              {new Intl.DateTimeFormat('fr').format(Date.parse(data.DOSE1.eventDate))}
             </Text>
           </Flex>
           <Flex>
@@ -87,7 +85,7 @@ const Certificates: FC<TerminologyProps> = () => {
               Facility:
             </Text>
             <Text pl="5px">
-              {data.events[0].orgUnitName}
+              {data.DOSE1.orgUnitName}
             </Text>
           </Flex>
         </SimpleGrid>}
