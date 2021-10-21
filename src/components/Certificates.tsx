@@ -55,7 +55,7 @@ const Certificates: FC<TerminologyProps> = () => {
         <CircularProgress isIndeterminate color="blue.700" />
       </Box>}
       {isSuccess && data.eligible && <Flex direction="column" width="100%" height="100%">
-        <Button onClick={() => history.push("/armed-forces")}>Back</Button>
+        <Button onClick={() => history.push("/")}>Back</Button>
         <PDFViewer width="100%" height="100%">
           <MyDocument data={data} certificate={data.certificate} />
         </PDFViewer>
