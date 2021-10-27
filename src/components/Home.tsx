@@ -1,10 +1,16 @@
-import { Box, Button, Flex, Heading, Input, Stack, VStack, UnorderedList, ListItem, Text, Link } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Input, Link, ListItem, Stack, Text, UnorderedList, VStack
+} from '@chakra-ui/react';
 import { ChangeEvent, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import UpdateDetails from './UpdateDetails';
 
 const Home = () => {
   const history = useHistory();
-
   const [nin, setNin] = useState<string>('');
   const [phoneNumber, setPhoneNumber] = useState<string>('');
 
@@ -71,7 +77,19 @@ const Home = () => {
           <Input border="4px" borderColor="blue.100" placeholder="Last Six(6) digits of your phone" onChange={onChange1} value={phoneNumber} size="lg" />
         </Stack>
         <VStack><Button size="lg" bg="blue.600" color="white" textTransform="uppercase" onClick={search}>Generate Certificate</Button></VStack>
+
+        <Stack h="400px" alignItems="center" alignContent="center" textAlign="center" justifyItems="center" justifyContent="center">
+          <Box fontSize="xl" fontWeight="black">
+            <Heading as="h1" color="red.600">UPDATING VITAL INFORMATION</Heading>
+            <p>
+              Incase any of your vital information (Date of Birth) is incorrect please Click here to request for update
+            </p>
+          </Box>
+          <VStack><UpdateDetails /></VStack>
+        </Stack>
       </Stack>
+
+
     </Flex>
   )
 }

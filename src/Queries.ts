@@ -57,6 +57,11 @@ export async function sendEmail(data: any) {
   return true
 }
 
+export async function updateBirthDay(details: any) {
+  const { data } = await api.post('certificates/update-birth', details);
+  return data
+}
+
 export function useTracker(identifier: string | null, phone: string | null) {
   return useQuery<any, Error>(
     ['certificate', identifier, phone],

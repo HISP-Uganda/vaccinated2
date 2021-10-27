@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress, Flex, FormControl, FormErrorMessage, FormLabel, Input, SimpleGrid, Stack, Text } from '@chakra-ui/react';
+import { Box, Button, CircularProgress, Flex, FormControl, FormErrorMessage, FormLabel, Spacer, Input, SimpleGrid, Stack, Text } from '@chakra-ui/react';
 import { PDFViewer } from '@react-pdf/renderer';
 import { Field, Form, Formik } from 'formik';
 import { FC, useCallback, useState } from 'react';
@@ -8,6 +8,7 @@ import { useHistory, useLocation } from 'react-router';
 import * as Yup from 'yup';
 import { sendEmail, useTracker } from '../Queries';
 import { MyDocument } from './MyDocument';
+import UpdateDetails from './UpdateDetails';
 
 export interface Contact {
   fullName: string;
@@ -55,7 +56,11 @@ const Certificates: FC<TerminologyProps> = () => {
         <CircularProgress isIndeterminate color="blue.700" />
       </Box>}
       {isSuccess && data.eligible && <Flex direction="column" width="100%" height="100%">
-        <Button onClick={() => history.push("/")}>Back</Button>
+        <Stack direction="row" my="10px">
+          <Button onClick={() => history.push("/")}>Back</Button>
+          <Spacer />
+          <UpdateDetails />
+        </Stack>
         <PDFViewer width="100%" height="100%">
           <MyDocument data={data} certificate={data.certificate} />
         </PDFViewer>

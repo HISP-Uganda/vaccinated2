@@ -10,6 +10,7 @@ import Certificates from './Certificates';
 import Home from "./Home";
 import Validate from "./Validate";
 import Contact from './Contact';
+import UpdateDetails from "./UpdateDetails";
 
 const App = () => (
   <Router>
@@ -30,6 +31,9 @@ const App = () => (
           </Route>
           <Route path="/contact" exact>
             <Contact />
+          </Route>
+          <Route path="/update" exact>
+            <UpdateDetails />
           </Route>
           <Route path="/" exact>
             <Home />
