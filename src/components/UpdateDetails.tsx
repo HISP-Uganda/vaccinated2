@@ -7,7 +7,7 @@ import {
 } from '@chakra-ui/react';
 import { format } from 'date-fns'
 import { useFormik } from 'formik';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useMutation } from 'react-query';
 import { useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
@@ -46,19 +46,25 @@ const maxDays: any = {
 
 const UpdateDetails: FC<{ identifier?: string | null, phone?: string | null }> = ({ identifier, phone }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const history = useHistory();
   const { mutateAsync } = useMutation(updateBirthDay, {
   });
 
   const handleSubmit = async (values: VaccinationDetails) => {
+    setIsSubmitting(true)
     try {
       const dob = format(new Date(parseInt(values.birthYear, 10), parseInt(values.birthMonth, 10) - 1, parseInt(values.birthDay, 10)), 'yyyy-MM-dd');
-      const { epivac } = await mutateAsync({ dob, identifier: values.identifier });
+      const { epivac, message } = await mutateAsync({ dob, identifier: values.identifier });
+      setIsSubmitting(false)
       if (epivac) {
         const params = new URLSearchParams();
         params.append('identifier', values.identifier);
         params.append('phone', values.phone);
-        history.push({ pathname: '/generate', search: params.toString() })
+        history.push('/')
+        history.replace({ pathname: '/generate', search: params.toString() })
+      } else {
+        alert(message)
       }
     } catch (error) {
       console.log(error)
@@ -75,7 +81,7 @@ const UpdateDetails: FC<{ identifier?: string | null, phone?: string | null }> =
       <Flex direction="row">
         <Text></Text>
         <Spacer />
-        <Button size="lg" bg="green.700" color="white" textTransform="uppercase" onClick={onOpen}>UPDATING VITAL INFORMATION</Button>
+        <Button size="lg" bg="green.700" color="white" textTransform="uppercase" onClick={onOpen}>UPDATE VITAL INFORMATION</Button>
       </Flex>
       <Modal isOpen={isOpen} onClose={onClose} size="2xl">
         <ModalOverlay />
@@ -158,9 +164,9 @@ const UpdateDetails: FC<{ identifier?: string | null, phone?: string | null }> =
                       <FormLabel fontSize="lg" htmlFor="birthDay">Day</FormLabel>
                       <NumberInput
                         min={1}
-                        max={maxDays[formik.values.birthMonth]}
+                        max={maxDays[formik.values.birthDay]}
                         size="md"
-                        id="birthMonth"
+                        id="birthDay"
                         value={formik.values.birthDay}
                         onChange={(valueAsString) => { formik.setFieldValue('birthDay', valueAsString); }}
                         onBlur={formik.handleBlur}
@@ -180,7 +186,7 @@ const UpdateDetails: FC<{ identifier?: string | null, phone?: string | null }> =
                     fontSize="xl"
                     size="md"
                     colorScheme="teal"
-                    // isLoading={isSubmitting}
+                    isLoading={isSubmitting}
                     type="submit"
                   >
                     Submit

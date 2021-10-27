@@ -76,9 +76,9 @@ const Home = () => {
 
         <Stack h="400px" alignItems="center" alignContent="center" textAlign="center" justifyItems="center" justifyContent="center">
           <Box fontSize="xl" fontWeight="black">
-            <Heading as="h1" color="red.600">UPDATING VITAL INFORMATION</Heading>
+            <Heading as="h1" color="red.600">UPDATE VITAL INFORMATION</Heading>
             <p>
-              Incase any of your vital information (Date of Birth) is incorrect please Click here to request for update
+              Incase any of your vital information (Date of Birth) is incorrect please Click here to update it.
             </p>
           </Box>
           <VStack><UpdateDetails /></VStack>
