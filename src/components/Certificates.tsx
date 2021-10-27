@@ -59,7 +59,7 @@ const Certificates: FC<TerminologyProps> = () => {
         <Stack direction="row" my="10px">
           <Button onClick={() => history.push("/")}>Back</Button>
           <Spacer />
-          <UpdateDetails />
+          <UpdateDetails identifier={params.get('identifier')} phone={params.get('phone')} />
         </Stack>
         <PDFViewer width="100%" height="100%">
           <MyDocument data={data} certificate={data.certificate} />

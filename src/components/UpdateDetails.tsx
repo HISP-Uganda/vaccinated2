@@ -7,6 +7,7 @@ import {
 } from '@chakra-ui/react';
 import { format } from 'date-fns'
 import { useFormik } from 'formik';
+import { FC } from 'react';
 import { useMutation } from 'react-query';
 import { useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
@@ -43,7 +44,7 @@ const maxDays: any = {
   12: 31
 }
 
-const UpdateDetails = () => {
+const UpdateDetails: FC<{ identifier?: string | null, phone?: string | null }> = ({ identifier, phone }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const history = useHistory();
   const { mutateAsync } = useMutation(updateBirthDay, {
@@ -64,7 +65,7 @@ const UpdateDetails = () => {
     }
   };
   const formik = useFormik({
-    initialValues: { identifier: '', birthYear: '1980', birthMonth: '', birthDay: '', phone: '' },
+    initialValues: { identifier: identifier || '', birthYear: '1980', birthMonth: '', birthDay: '', phone: phone || '' },
     validationSchema,
     onSubmit: handleSubmit,
   });
@@ -87,6 +88,7 @@ const UpdateDetails = () => {
                 <FormControl isInvalid={!!formik.errors.identifier && !!formik.touched.identifier}>
                   <FormLabel fontSize="xl" fontWeight="bold" htmlFor="identifier">Registration ID</FormLabel>
                   <Input
+                    disabled={!!identifier}
                     size="md"
                     id="identifier"
                     placeholder="Registration Id"
@@ -99,6 +101,7 @@ const UpdateDetails = () => {
                 <FormControl isInvalid={!!formik.errors.phone && !!formik.touched.phone}>
                   <FormLabel fontSize="xl" fontWeight="bold" htmlFor="phone">Last 6 digits of your registered phone number</FormLabel>
                   <Input
+                    disabled={!!phone}
                     size="md"
                     id="phone"
                     placeholder="Phone Number"

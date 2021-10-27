@@ -25,10 +25,6 @@ const Home = () => {
   const search = () => {
     if (!!nin && !!phoneNumber) {
       const params = new URLSearchParams();
-      // params.append('nin', nin);
-      // params.append('phone', phoneNumber);
-      // history.push({ pathname: '/generate', search: params.toString() })
-
       params.append('identifier', nin);
       params.append('phone', phoneNumber);
       history.push({ pathname: '/generate', search: params.toString() })

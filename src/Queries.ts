@@ -67,7 +67,6 @@ export function useTracker(identifier: string | null, phone: string | null) {
     ['certificate', identifier, phone],
     async () => {
       const { data } = await api.get('certificates', { params: { identifier, phone } });
-      console.log(data);
       return data;
     },
   );
