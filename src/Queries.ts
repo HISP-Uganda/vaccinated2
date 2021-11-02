@@ -59,6 +59,7 @@ export async function sendEmail(data: any) {
 
 export async function updateBirthDay(details: any) {
   const { data } = await api.post('certificates/update-birth', details);
+  console.log(data)
   return data
 }
 

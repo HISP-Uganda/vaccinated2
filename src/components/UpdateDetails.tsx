@@ -55,16 +55,17 @@ const UpdateDetails: FC<{ identifier?: string | null, phone?: string | null }> =
     setIsSubmitting(true)
     try {
       const dob = format(new Date(parseInt(values.birthYear, 10), parseInt(values.birthMonth, 10) - 1, parseInt(values.birthDay, 10)), 'yyyy-MM-dd');
-      const { epivac, message } = await mutateAsync({ dob, identifier: values.identifier });
+      const { updated, reason } = await mutateAsync({ dob, identifier: values.identifier, phone: values.phone });
+      console.log(updated, reason);
       setIsSubmitting(false)
-      if (epivac) {
+      if (updated) {
         const params = new URLSearchParams();
         params.append('identifier', values.identifier);
         params.append('phone', values.phone);
         history.push('/')
         history.replace({ pathname: '/generate', search: params.toString() })
       } else {
-        alert(message)
+        alert(reason)
       }
     } catch (error) {
       console.log(error)
