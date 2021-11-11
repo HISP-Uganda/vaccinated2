@@ -62,7 +62,7 @@ const Certificates: FC<TerminologyProps> = () => {
           <UpdateDetails identifier={params.get('identifier')} phone={params.get('phone')} />
         </Stack>
         <PDFViewer width="100%" height="100%">
-          <MyDocument data={data} certificate={data.certificate} />
+          <MyDocument data={data} certificate={data.certificate} doses={data.doses} />
         </PDFViewer>
       </Flex>}
       {isSuccess && !data.eligible && <Flex direction="column">

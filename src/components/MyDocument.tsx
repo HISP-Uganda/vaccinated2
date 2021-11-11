@@ -8,10 +8,12 @@ import { FC } from 'react';
 import mohImage from '../moh.png';
 import sig from '../sig.png';
 import { NAME_ATTRIBUTE, VACCINATION_CARD_NO, DOB_ATTRIBUTE } from '../Queries';
+import { range } from 'lodash';
 
 interface QR {
   data: any,
   certificate: string;
+  doses: number;
 }
 
 // Create styles
@@ -52,11 +54,11 @@ const styles = StyleSheet.create({
     height: 350,
     width: 350,
   },
-  table: { display: 'flex', flexDirection: 'row', height: 170, marginHorizontal: '10px' },
+  table: { display: 'flex', flexDirection: 'row', height: 170 },
 });
 
 // Create Document Component
-export const MyDocument: FC<QR> = ({ data, certificate }) => {
+export const MyDocument: FC<QR> = ({ data, certificate, doses }) => {
   return (
     <Document>
       <Page size="A4" style={styles.body} orientation="landscape">
@@ -102,74 +104,40 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                 </Text>
               </View>
               <View style={styles.table}>
-                <View style={{ width: '70%', display: 'flex', flexDirection: 'row' }}>
-                  <View style={{ width: '49%', display: 'flex', flexDirection: 'column', border: '1px solid #9CA3AF' }}>
+                <View style={{ width: '75%', display: 'flex', flexDirection: 'row' }}>
+                  {range(0, doses).map((dose) => <View key={dose} style={{ marginLeft: 10, display: 'flex', flex: 1, flexDirection: 'column', border: '1px solid #9CA3AF' }}>
                     <View style={{ backgroundColor: '#9CA3AF' }}>
-                      <Text style={{ textTransform: 'uppercase', fontSize: '32px', color: 'white', textAlign: 'center' }}>Dose 01</Text>
+                      <Text style={{ textTransform: 'uppercase', fontSize: '32px', color: 'white', textAlign: 'center' }}>{`Dose 0${dose + 1}`}</Text>
                     </View>
                     <View style={{ display: 'flex', padding: 10 }}>
                       <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text>Date:</Text>
-                        <Text>{new Intl.DateTimeFormat('fr').format(Date.parse(data.DOSE1.eventDate))}</Text>
+                        <Text>{new Intl.DateTimeFormat('fr').format(Date.parse(data[`DOSE${dose + 1}`].eventDate))}</Text>
                       </View>
 
                       <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text>Batch No:</Text>
-                        <Text>{data.DOSE1.Yp1F4txx8tm}</Text>
+                        <Text>{data[`DOSE${dose + 1}`].Yp1F4txx8tm}</Text>
                       </View>
                       <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text>Vaccine:</Text>
-                        <Text>{data.DOSE1.bbnyNYD1wgS}</Text>
+                        <Text>{data[`DOSE${dose + 1}`].bbnyNYD1wgS}</Text>
                       </View>
 
                       <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text>MFG:</Text>
-                        <Text style={{}}>{data.DOSE1.rpkH9ZPGJcX}</Text>
+                        <Text style={{}}>{data[`DOSE${dose + 1}`].rpkH9ZPGJcX}</Text>
                       </View>
                       <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text>Facility:</Text>
-                        <Text style={{ flex: 1, textAlign: 'right' }}>{data.DOSE1.orgUnitName}</Text>
+                        <Text style={{ flex: 1, textAlign: 'right' }}>{data[`DOSE${dose + 1}`].orgUnitName}</Text>
                       </View>
                       <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text >District:</Text>
-                        <Text style={{ flex: 1, textAlign: 'right' }}>{data.DOSE1.districtName}</Text>
+                        <Text style={{ flex: 1, textAlign: 'right' }}>{data[`DOSE${dose + 1}`].districtName}</Text>
                       </View>
                     </View>
-                  </View>
-                  <View style={{ flex: 1 }}></View>
-                  <View style={{ width: '49%', display: 'flex', flexDirection: 'column', border: '1px solid #9CA3AF' }}>
-                    <View style={{ backgroundColor: '#9CA3AF' }}>
-                      <Text style={{ textTransform: 'uppercase', fontSize: '32px', color: 'white', textAlign: 'center' }}>Dose 02</Text>
-                    </View>
-                    <View style={{ display: 'flex', padding: 10 }}>
-                      <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text>Date:</Text>
-                        <Text>{new Intl.DateTimeFormat('fr').format(Date.parse(data.DOSE2.eventDate))}</Text>
-                      </View>
-
-                      <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text>Batch No:</Text>
-                        <Text>{data.DOSE2.Yp1F4txx8tm}</Text>
-                      </View>
-                      <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text>Vaccine:</Text>
-                        <Text>{data.DOSE2.bbnyNYD1wgS}</Text>
-                      </View>
-
-                      <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text>MFG:</Text>
-                        <Text style={{}}>{data.DOSE2.rpkH9ZPGJcX}</Text>
-                      </View>
-                      <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text >Facility:</Text>
-                        <Text style={{ flex: 1, textAlign: 'right' }}>{data.DOSE2.orgUnitName}</Text>
-                      </View>
-                      <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text >District:</Text>
-                        <Text style={{ flex: 1, textAlign: 'right' }}>{data.DOSE2.districtName}</Text>
-                      </View>
-                    </View>
-                  </View>
+                  </View>)}
                 </View>
                 <View style={{ flex: 1, display: 'flex', alignContent: 'center', alignItems: 'center', justifyContent: 'center' }}>
                   <Image
