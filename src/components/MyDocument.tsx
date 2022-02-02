@@ -14,6 +14,7 @@ import { NAME_ATTRIBUTE, VACCINATION_CARD_NO, DOB_ATTRIBUTE } from "../Queries";
 interface QR {
   data: any;
   certificate: string;
+  doses: number;
 }
 
 const styles = StyleSheet.create({

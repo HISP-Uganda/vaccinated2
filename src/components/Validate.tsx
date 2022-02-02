@@ -35,7 +35,7 @@ const ValidateForces = () => {
         <Flex direction="column" mt="10">
           <Text bg="yellow.300" mb="10px">Vaccination Details</Text>
           <SimpleGrid columns={[1, 1, 2]} spacing="10">
-            <Flex direction="column" border="1px solid gray" p="5px">
+            {!!data.DOSE1 && <Flex direction="column" border="1px solid gray" p="5px">
               <Text bg="gray.200">Dose1</Text>
               <Flex justifyContent="space-between" direction={["column", "column", "row"]}>
                 <Text fontWeight="bold">Date:</Text>
@@ -61,8 +61,8 @@ const ValidateForces = () => {
                 <Text fontWeight="bold">District:</Text>
                 <Text pl={[null, null, "10px"]}>{data.DOSE1.districtName}</Text>
               </Flex>
-            </Flex>
-            <Flex direction="column" border="1px solid gray" p="5px">
+            </Flex>}
+            {!!data.DOSE2 && <Flex direction="column" border="1px solid gray" p="5px">
               <Text bg="gray.200">Dose2</Text>
               <Flex justifyContent="space-between" direction={["column", "column", "row"]}>
                 <Text fontWeight="bold">Date:</Text>
@@ -88,7 +88,7 @@ const ValidateForces = () => {
                 <Text fontWeight="bold">District:</Text>
                 <Text pl={[null, null, "10px"]}>{data.DOSE2.districtName}</Text>
               </Flex>
-            </Flex>
+            </Flex>}
           </SimpleGrid>
         </Flex>
       </Flex>}
