@@ -212,7 +212,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                   <Text
                     style={{
                       fontWeight: "black",
-                      color: data.type === "Fully" ? "green" : "orange",
+                      color: data.type === "Fully" ? "#2F855A" : "#DD6B20",
                       textTransform: "uppercase",
                       fontFamily: "Helvetica-Bold",
                     }}
