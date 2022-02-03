@@ -212,6 +212,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                   <Text
                     style={{
                       fontWeight: "black",
+                      color: data.type === "Fully" ? "green" : "orange",
                       textTransform: "uppercase",
                       fontFamily: "Helvetica-Bold",
                     }}
@@ -223,7 +224,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                   <Text
                     style={{
                       fontSize: "16px",
-                      fontWeight: "bold",
+                      color: "red",
                       fontFamily: "Times-Italic",
                     }}
                   >
@@ -311,7 +312,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "12px",
                         height: "12.5%",
                         display: "flex",
-                        justifyContent: "center",
                         fontFamily: "Helvetica-Bold",
                       }}
                     >
@@ -322,7 +322,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "12px",
                         height: "12.5%",
                         display: "flex",
-                        justifyContent: "center",
                         fontFamily: "Helvetica-Bold",
                       }}
                     >
@@ -339,7 +338,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "12px",
                         height: "12.5%",
                         display: "flex",
-                        justifyContent: "center",
                         fontFamily: "Helvetica-Bold",
                       }}
                     >
@@ -356,7 +354,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "12px",
                         height: "25%",
                         display: "flex",
-                        justifyContent: "center",
                         fontFamily: "Helvetica-Bold",
                       }}
                     >
@@ -373,7 +370,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "12px",
                         height: "25%",
                         display: "flex",
-                        justifyContent: "center",
                         fontFamily: "Helvetica-Bold",
                       }}
                     >
@@ -390,7 +386,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "12px",
                         height: "12.5%",
                         display: "flex",
-                        justifyContent: "center",
                         fontFamily: "Helvetica-Bold",
                       }}
                     >
@@ -418,7 +413,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "14px",
                         height: "12.5%",
                         display: "flex",
-                        justifyContent: "center",
                       }}
                     >
                       <Text
@@ -438,7 +432,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "14px",
                         height: "12.5%",
                         display: "flex",
-                        justifyContent: "center",
                       }}
                     >
                       <Text
@@ -454,7 +447,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "14px",
                         height: "12.5%",
                         display: "flex",
-                        justifyContent: "center",
                       }}
                     >
                       <Text
@@ -470,7 +462,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "14px",
                         height: "25%",
                         display: "flex",
-                        justifyContent: "center",
                       }}
                     >
                       <Text
@@ -486,7 +477,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "14px",
                         height: "25%",
                         display: "flex",
-                        justifyContent: "center",
                       }}
                     >
                       <Text
@@ -502,7 +492,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "14px",
                         height: "12.5%",
                         display: "flex",
-                        justifyContent: "center",
                       }}
                     >
                       <Text
@@ -517,7 +506,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                   <View
                     style={{
                       width: "23%",
-                      paddingLeft: "5px",
                       marginLeft: "2px",
                       display: "flex",
                       flexDirection: "column",
@@ -529,7 +517,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "14px",
                         height: "12.5%",
                         display: "flex",
-                        justifyContent: "center",
                       }}
                     >
                       <Text
@@ -549,7 +536,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "14px",
                         height: "12.5%",
                         display: "flex",
-                        justifyContent: "center",
                       }}
                     >
                       <Text
@@ -565,7 +551,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "14px",
                         height: "12.5%",
                         display: "flex",
-                        justifyContent: "center",
                       }}
                     >
                       <Text
@@ -581,7 +566,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "14px",
                         height: "25%",
                         display: "flex",
-                        justifyContent: "center",
                       }}
                     >
                       <Text
@@ -597,7 +581,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "14px",
                         height: "25%",
                         display: "flex",
-                        justifyContent: "center",
                       }}
                     >
                       <Text
@@ -613,7 +596,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "14px",
                         height: "12.5%",
                         display: "flex",
-                        justifyContent: "center",
                       }}
                     >
                       <Text
@@ -628,7 +610,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                   <View
                     style={{
                       width: "23%",
-                      paddingLeft: "5px",
                       marginLeft: "2px",
                       display: "flex",
                       flexDirection: "column",
@@ -640,7 +621,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "14px",
                         height: "12.5%",
                         display: "flex",
-                        justifyContent: "center",
                       }}
                     >
                       <Text
@@ -660,7 +640,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "14px",
                         height: "12.5%",
                         display: "flex",
-                        justifyContent: "center",
                       }}
                     >
                       <Text
@@ -676,7 +655,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "14px",
                         height: "12.5%",
                         display: "flex",
-                        justifyContent: "center",
                       }}
                     >
                       <Text
@@ -692,7 +670,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "14px",
                         height: "25%",
                         display: "flex",
-                        justifyContent: "center",
                       }}
                     >
                       <Text
@@ -708,7 +685,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "14px",
                         height: "25%",
                         display: "flex",
-                        justifyContent: "center",
                       }}
                     >
                       <Text
@@ -724,7 +700,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "14px",
                         height: "12.5%",
                         display: "flex",
-                        justifyContent: "center",
                       }}
                     >
                       <Text
@@ -739,7 +714,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                   <View
                     style={{
                       width: "23%",
-                      paddingLeft: "5px",
                       marginLeft: "2px",
                       display: "flex",
                       flexDirection: "column",
@@ -751,7 +725,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "14px",
                         height: "12.5%",
                         display: "flex",
-                        justifyContent: "center",
                       }}
                     >
                       <Text
@@ -771,7 +744,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "14px",
                         height: "12.5%",
                         display: "flex",
-                        justifyContent: "center",
                       }}
                     >
                       <Text
@@ -787,7 +759,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "14px",
                         height: "12.5%",
                         display: "flex",
-                        justifyContent: "center",
                       }}
                     >
                       <Text
@@ -803,7 +774,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "14px",
                         height: "25%",
                         display: "flex",
-                        justifyContent: "center",
                       }}
                     >
                       <Text
@@ -819,7 +789,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "14px",
                         height: "25%",
                         display: "flex",
-                        justifyContent: "center",
                       }}
                     >
                       <Text
@@ -835,7 +804,6 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         fontSize: "14px",
                         height: "12.5%",
                         display: "flex",
-                        justifyContent: "center",
                       }}
                     >
                       <Text
