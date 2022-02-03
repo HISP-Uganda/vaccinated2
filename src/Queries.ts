@@ -26,8 +26,8 @@ export const ELSEWHERE_MAN = "taGJD9hkX0s";
 export const ELSEWHERE_BATCH = "muCgXjnCfnS";
 
 export const api = axios.create({
-  // baseURL: "http://localhost:3001/",
-  baseURL: "https://services.dhis2.hispuganda.org/",
+  baseURL: "http://localhost:3001/",
+  // baseURL: "https://services.dhis2.hispuganda.org/",
 });
 
 export function useInstance(tei: string, nin: string) {

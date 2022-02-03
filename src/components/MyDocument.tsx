@@ -172,7 +172,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         <Text
                           style={{ fontFamily: "Times-Italic", color: "red" }}
                         >
-                          {data[VACCINATION_CARD_NO]}
+                          {certificate}
                         </Text>
                       </View>
                     </View>
