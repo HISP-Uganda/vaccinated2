@@ -650,7 +650,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                       >
                         {data["BOOSTER1"]
                           ? new Intl.DateTimeFormat("fr").format(
-                              Date.parse(data["DOSE1"].eventDate)
+                              Date.parse(data["BOOSTER1"].eventDate)
                             )
                           : ""}
                       </Text>
@@ -761,7 +761,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                       >
                         {data["BOOSTER2"]
                           ? new Intl.DateTimeFormat("fr").format(
-                              Date.parse(data["DOSE1"].eventDate)
+                              Date.parse(data["BOOSTER2"].eventDate)
                             )
                           : ""}
                       </Text>
