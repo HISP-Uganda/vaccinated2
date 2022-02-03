@@ -243,43 +243,47 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                   marginBottom: "2px",
                 }}
               >
-                <View style={{ width: "12%" }}></View>
+                <View style={{ width: "8%" }}></View>
                 <View
                   style={{
-                    width: "22%",
+                    width: "23%",
                     paddingLeft: "5px",
                     textAlign: "center",
                     marginLeft: "2px",
+                    fontSize: "14px",
                   }}
                 >
                   <Text>DOSE 01</Text>
                 </View>
                 <View
                   style={{
-                    width: "22%",
+                    width: "23%",
                     paddingLeft: "5px",
                     textAlign: "center",
                     marginLeft: "2px",
+                    fontSize: "14px",
                   }}
                 >
                   <Text>DOSE 02</Text>
                 </View>
                 <View
                   style={{
-                    width: "22%",
+                    width: "23%",
                     paddingLeft: "5px",
                     textAlign: "center",
                     marginLeft: "2px",
+                    fontSize: "14px",
                   }}
                 >
                   <Text>BOOSTER 01</Text>
                 </View>
                 <View
                   style={{
-                    width: "22%",
+                    width: "23%",
                     paddingLeft: "5px",
                     textAlign: "center",
                     marginLeft: "2px",
+                    fontSize: "14px",
                   }}
                 >
                   <Text>BOOSTER 02</Text>
@@ -295,72 +299,224 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                 >
                   <View
                     style={{
-                      width: "12%",
+                      width: "8%",
                       display: "flex",
                       flexDirection: "column",
-                      paddingLeft: "5px",
                       border: "1px solid #9CA3AF",
+                      backgroundColor: "#E2E8F0",
                     }}
                   >
-                    <Text
+                    <View
                       style={{
                         fontSize: "12px",
-                        height: "16.66666667%",
+                        height: "14%",
+                        display: "flex",
+                        justifyContent: "center",
                         fontFamily: "Helvetica-Bold",
                       }}
                     >
-                      Date:
-                    </Text>
-                    <Text
+                      <Text style={{ paddingLeft: "5px" }}>Date:</Text>
+                    </View>
+                    <View
                       style={{
                         fontSize: "12px",
-                        height: "16.66666667%",
+                        height: "14%",
+                        display: "flex",
+                        justifyContent: "center",
                         fontFamily: "Helvetica-Bold",
                       }}
                     >
-                      Batch No:
-                    </Text>
-                    <Text
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        Batch No:
+                      </Text>
+                    </View>
+                    <View
                       style={{
                         fontSize: "12px",
-                        height: "16.66666667%",
+                        height: "14%",
+                        display: "flex",
+                        justifyContent: "center",
                         fontFamily: "Helvetica-Bold",
                       }}
                     >
-                      Vaccine:
-                    </Text>
-                    <Text
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        Vaccine:
+                      </Text>
+                    </View>
+                    <View
                       style={{
                         fontSize: "12px",
-                        height: "16.66666667%",
+                        height: "14%",
+                        display: "flex",
+                        justifyContent: "center",
                         fontFamily: "Helvetica-Bold",
                       }}
                     >
-                      Manufacturer:
-                    </Text>
-                    <Text
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        Mfg:
+                      </Text>
+                    </View>
+                    <View
                       style={{
                         fontSize: "12px",
-                        height: "16.66666667%",
+                        height: "30%",
+                        display: "flex",
+                        justifyContent: "center",
                         fontFamily: "Helvetica-Bold",
                       }}
                     >
-                      Facility:
-                    </Text>
-                    <Text
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        Facility:
+                      </Text>
+                    </View>
+                    <View
                       style={{
                         fontSize: "12px",
-                        height: "16.66666667%",
+                        height: "14%",
+                        display: "flex",
+                        justifyContent: "center",
                         fontFamily: "Helvetica-Bold",
                       }}
                     >
-                      District:
-                    </Text>
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        District:
+                      </Text>
+                    </View>
                   </View>
 
                   <View
                     style={{
-                      width: "22%",
+                      width: "23%",
+                      marginLeft: "2px",
+                      display: "flex",
+                      flexDirection: "column",
+                      border: "1px solid #9CA3AF",
+                    }}
+                  >
+                    <View
+                      style={{
+                        fontSize: "14px",
+                        height: "14%",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        {data["DOSE1"]
+                          ? new Intl.DateTimeFormat("fr").format(
+                              Date.parse(data["DOSE1"].eventDate)
+                            )
+                          : ""}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        fontSize: "14px",
+                        height: "14%",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        {data["DOSE1"]?.Yp1F4txx8tm}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        fontSize: "14px",
+                        height: "14%",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        {data["DOSE1"]?.bbnyNYD1wgS}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        fontSize: "14px",
+                        height: "14%",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        {data["DOSE1"]?.rpkH9ZPGJcX}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        fontSize: "14px",
+                        height: "30%",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        {data["DOSE1"]?.orgUnitName}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        fontSize: "14px",
+                        height: "14%",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        {data["DOSE1"]?.districtName}
+                      </Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      width: "23%",
                       paddingLeft: "5px",
                       marginLeft: "2px",
                       display: "flex",
@@ -368,65 +524,110 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                       border: "1px solid #9CA3AF",
                     }}
                   >
-                    <Text style={{ fontSize: "14px", height: "16.66666667%" }}>
-                      {data["DOSE1"]
-                        ? new Intl.DateTimeFormat("fr").format(
-                            Date.parse(data["DOSE1"].eventDate)
-                          )
-                        : ""}
-                    </Text>
-                    <Text style={{ fontSize: "14px", height: "16.66666667%" }}>
-                      {data["DOSE1"]?.Yp1F4txx8tm}
-                    </Text>
-                    <Text style={{ fontSize: "14px", height: "16.66666667%" }}>
-                      {data["DOSE1"]?.bbnyNYD1wgS}
-                    </Text>
-                    <Text style={{ fontSize: "14px", height: "16.66666667%" }}>
-                      {data["DOSE1"]?.rpkH9ZPGJcX}
-                    </Text>
-                    <Text style={{ fontSize: "14px", height: "16.66666667%" }}>
-                      {data["DOSE1"]?.orgUnitName}
-                    </Text>
-                    <Text style={{ fontSize: "14px", height: "16.66666667%" }}>
-                      {data["DOSE1"]?.districtName}
-                    </Text>
+                    <View
+                      style={{
+                        fontSize: "14px",
+                        height: "14%",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        {data["DOSE2"]
+                          ? new Intl.DateTimeFormat("fr").format(
+                              Date.parse(data["DOSE2"].eventDate)
+                            )
+                          : ""}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        fontSize: "14px",
+                        height: "14%",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        {data["DOSE2"]?.Yp1F4txx8tm}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        fontSize: "14px",
+                        height: "14%",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        {data["DOSE2"]?.bbnyNYD1wgS}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        fontSize: "14px",
+                        height: "14%",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        {data["DOSE2"]?.rpkH9ZPGJcX}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        fontSize: "14px",
+                        height: "30%",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        {data["DOSE2"]?.orgUnitName}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        fontSize: "14px",
+                        height: "14%",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        {data["DOSE2"]?.districtName}
+                      </Text>
+                    </View>
                   </View>
                   <View
                     style={{
-                      width: "22%",
-                      paddingLeft: "5px",
-                      marginLeft: "2px",
-                      display: "flex",
-                      flexDirection: "column",
-                      border: "1px solid #9CA3AF",
-                    }}
-                  >
-                    <Text style={{ fontSize: "14px", height: "16.66666667%" }}>
-                      {data["DOSE2"]
-                        ? new Intl.DateTimeFormat("fr").format(
-                            Date.parse(data["DOSE1"].eventDate)
-                          )
-                        : ""}
-                    </Text>
-                    <Text style={{ fontSize: "14px", height: "16.66666667%" }}>
-                      {data["DOSE2"]?.Yp1F4txx8tm}
-                    </Text>
-                    <Text style={{ fontSize: "14px", height: "16.66666667%" }}>
-                      {data["DOSE2"]?.bbnyNYD1wgS}
-                    </Text>
-                    <Text style={{ fontSize: "14px", height: "16.66666667%" }}>
-                      {data["DOSE2"]?.rpkH9ZPGJcX}
-                    </Text>
-                    <Text style={{ fontSize: "14px", height: "16.66666667%" }}>
-                      {data["DOSE2"]?.orgUnitName}
-                    </Text>
-                    <Text style={{ fontSize: "14px", height: "16.66666667%" }}>
-                      {data["DOSE2"]?.districtName}
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      width: "22%",
+                      width: "23%",
                       paddingLeft: "5px",
                       marginLeft: "2px",
                       display: "flex",
@@ -459,7 +660,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                   </View>
                   <View
                     style={{
-                      width: "22%",
+                      width: "23%",
                       paddingLeft: "5px",
                       marginLeft: "2px",
                       display: "flex",
