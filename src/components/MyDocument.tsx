@@ -181,7 +181,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
 
                 <Text
                   style={{
-                    marginVertical: 10,
+                    marginVertical: 20,
                     marginHorizontal: 30,
                     textAlign: "center",
                   }}
@@ -309,7 +309,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                     <View
                       style={{
                         fontSize: "12px",
-                        height: "14%",
+                        height: "12.5%",
                         display: "flex",
                         justifyContent: "center",
                         fontFamily: "Helvetica-Bold",
@@ -320,7 +320,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                     <View
                       style={{
                         fontSize: "12px",
-                        height: "14%",
+                        height: "12.5%",
                         display: "flex",
                         justifyContent: "center",
                         fontFamily: "Helvetica-Bold",
@@ -337,7 +337,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                     <View
                       style={{
                         fontSize: "12px",
-                        height: "14%",
+                        height: "12.5%",
                         display: "flex",
                         justifyContent: "center",
                         fontFamily: "Helvetica-Bold",
@@ -354,7 +354,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                     <View
                       style={{
                         fontSize: "12px",
-                        height: "14%",
+                        height: "25%",
                         display: "flex",
                         justifyContent: "center",
                         fontFamily: "Helvetica-Bold",
@@ -371,7 +371,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                     <View
                       style={{
                         fontSize: "12px",
-                        height: "30%",
+                        height: "25%",
                         display: "flex",
                         justifyContent: "center",
                         fontFamily: "Helvetica-Bold",
@@ -388,7 +388,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                     <View
                       style={{
                         fontSize: "12px",
-                        height: "14%",
+                        height: "12.5%",
                         display: "flex",
                         justifyContent: "center",
                         fontFamily: "Helvetica-Bold",
@@ -416,7 +416,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                     <View
                       style={{
                         fontSize: "14px",
-                        height: "14%",
+                        height: "12.5%",
                         display: "flex",
                         justifyContent: "center",
                       }}
@@ -436,7 +436,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                     <View
                       style={{
                         fontSize: "14px",
-                        height: "14%",
+                        height: "12.5%",
                         display: "flex",
                         justifyContent: "center",
                       }}
@@ -452,7 +452,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                     <View
                       style={{
                         fontSize: "14px",
-                        height: "14%",
+                        height: "12.5%",
                         display: "flex",
                         justifyContent: "center",
                       }}
@@ -468,7 +468,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                     <View
                       style={{
                         fontSize: "14px",
-                        height: "14%",
+                        height: "25%",
                         display: "flex",
                         justifyContent: "center",
                       }}
@@ -484,7 +484,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                     <View
                       style={{
                         fontSize: "14px",
-                        height: "30%",
+                        height: "25%",
                         display: "flex",
                         justifyContent: "center",
                       }}
@@ -500,7 +500,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                     <View
                       style={{
                         fontSize: "14px",
-                        height: "14%",
+                        height: "12.5%",
                         display: "flex",
                         justifyContent: "center",
                       }}
@@ -527,7 +527,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                     <View
                       style={{
                         fontSize: "14px",
-                        height: "14%",
+                        height: "12.5%",
                         display: "flex",
                         justifyContent: "center",
                       }}
@@ -547,7 +547,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                     <View
                       style={{
                         fontSize: "14px",
-                        height: "14%",
+                        height: "12.5%",
                         display: "flex",
                         justifyContent: "center",
                       }}
@@ -563,7 +563,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                     <View
                       style={{
                         fontSize: "14px",
-                        height: "14%",
+                        height: "12.5%",
                         display: "flex",
                         justifyContent: "center",
                       }}
@@ -579,7 +579,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                     <View
                       style={{
                         fontSize: "14px",
-                        height: "14%",
+                        height: "25%",
                         display: "flex",
                         justifyContent: "center",
                       }}
@@ -595,7 +595,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                     <View
                       style={{
                         fontSize: "14px",
-                        height: "30%",
+                        height: "25%",
                         display: "flex",
                         justifyContent: "center",
                       }}
@@ -611,7 +611,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                     <View
                       style={{
                         fontSize: "14px",
-                        height: "14%",
+                        height: "12.5%",
                         display: "flex",
                         justifyContent: "center",
                       }}
@@ -635,28 +635,106 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                       border: "1px solid #9CA3AF",
                     }}
                   >
-                    <Text style={{ fontSize: "14px", height: "16.66666667%" }}>
-                      {data["BOOSTER1"]
-                        ? new Intl.DateTimeFormat("fr").format(
-                            Date.parse(data["DOSE1"].eventDate)
-                          )
-                        : ""}
-                    </Text>
-                    <Text style={{ fontSize: "14px", height: "16.66666667%" }}>
-                      {data["BOOSTER1"]?.Yp1F4txx8tm}
-                    </Text>
-                    <Text style={{ fontSize: "14px", height: "16.66666667%" }}>
-                      {data["BOOSTER1"]?.bbnyNYD1wgS}
-                    </Text>
-                    <Text style={{ fontSize: "14px", height: "16.66666667%" }}>
-                      {data["BOOSTER1"]?.rpkH9ZPGJcX}
-                    </Text>
-                    <Text style={{ fontSize: "14px", height: "16.66666667%" }}>
-                      {data["BOOSTER1"]?.orgUnitName}
-                    </Text>
-                    <Text style={{ fontSize: "14px", height: "16.66666667%" }}>
-                      {data["BOOSTER1"]?.districtName}
-                    </Text>
+                    <View
+                      style={{
+                        fontSize: "14px",
+                        height: "12.5%",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        {data["BOOSTER1"]
+                          ? new Intl.DateTimeFormat("fr").format(
+                              Date.parse(data["DOSE1"].eventDate)
+                            )
+                          : ""}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        fontSize: "14px",
+                        height: "12.5%",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        {data["BOOSTER1"]?.Yp1F4txx8tm}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        fontSize: "14px",
+                        height: "12.5%",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        {data["BOOSTER1"]?.bbnyNYD1wgS}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        fontSize: "14px",
+                        height: "25%",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        {data["BOOSTER1"]?.rpkH9ZPGJcX}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        fontSize: "14px",
+                        height: "25%",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        {data["BOOSTER1"]?.orgUnitName}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        fontSize: "14px",
+                        height: "12.5%",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        {data["BOOSTER1"]?.districtName}
+                      </Text>
+                    </View>
                   </View>
                   <View
                     style={{
@@ -668,28 +746,106 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                       border: "1px solid #9CA3AF",
                     }}
                   >
-                    <Text style={{ fontSize: "14px", height: "16.66666667%" }}>
-                      {data["BOOSTER2"]
-                        ? new Intl.DateTimeFormat("fr").format(
-                            Date.parse(data["DOSE1"].eventDate)
-                          )
-                        : ""}
-                    </Text>
-                    <Text style={{ fontSize: "14px", height: "16.66666667%" }}>
-                      {data["BOOSTER2"]?.Yp1F4txx8tm}
-                    </Text>
-                    <Text style={{ fontSize: "14px", height: "16.66666667%" }}>
-                      {data["BOOSTER2"]?.bbnyNYD1wgS}
-                    </Text>
-                    <Text style={{ fontSize: "14px", height: "16.66666667%" }}>
-                      {data["BOOSTER2"]?.rpkH9ZPGJcX}
-                    </Text>
-                    <Text style={{ fontSize: "14px", height: "16.66666667%" }}>
-                      {data["BOOSTER2"]?.orgUnitName}
-                    </Text>
-                    <Text style={{ fontSize: "14px", height: "16.66666667%" }}>
-                      {data["BOOSTER2"]?.districtName}
-                    </Text>
+                    <View
+                      style={{
+                        fontSize: "14px",
+                        height: "12.5%",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        {data["BOOSTER2"]
+                          ? new Intl.DateTimeFormat("fr").format(
+                              Date.parse(data["DOSE1"].eventDate)
+                            )
+                          : ""}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        fontSize: "14px",
+                        height: "12.5%",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        {data["BOOSTER2"]?.Yp1F4txx8tm}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        fontSize: "14px",
+                        height: "12.5%",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        {data["BOOSTER2"]?.bbnyNYD1wgS}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        fontSize: "14px",
+                        height: "25%",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        {data["BOOSTER2"]?.rpkH9ZPGJcX}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        fontSize: "14px",
+                        height: "25%",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        {data["BOOSTER2"]?.orgUnitName}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        fontSize: "14px",
+                        height: "12.5%",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          paddingLeft: "5px",
+                        }}
+                      >
+                        {data["BOOSTER2"]?.districtName}
+                      </Text>
+                    </View>
                   </View>
                 </View>
               </View>
@@ -708,7 +864,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                 >
                   ISSUED AND APPROVED BY
                 </Text>
-                <Image style={{ height: 60 }} src={sig} />
+                <Image style={{ height: 80 }} src={sig} />
                 <Text
                   style={{
                     fontSize: "14px",
@@ -726,7 +882,9 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                   tel. +256-417-712-221 | email. ps@health.go.ug | website.
                   www.health.go.ug{" "}
                 </Text>
-                <Text style={{ width: "20%" }}>Version: COVICERT-003</Text>
+                <Text style={{ width: "20%", color: "#CBD5E0" }}>
+                  Version: COVICERT-003
+                </Text>
               </View>
             </View>
           </View>
