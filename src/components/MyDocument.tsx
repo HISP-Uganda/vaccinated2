@@ -181,7 +181,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
 
                 <Text
                   style={{
-                    marginVertical: 20,
+                    marginVertical: 10,
                     marginHorizontal: 30,
                     textAlign: "center",
                   }}
@@ -303,6 +303,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                       width: "8%",
                       display: "flex",
                       flexDirection: "column",
+                      height: "100%",
                       border: "1px solid #9CA3AF",
                       backgroundColor: "#E2E8F0",
                     }}
@@ -384,7 +385,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                     <View
                       style={{
                         fontSize: "12px",
-                        height: "12.5%",
+                        height: "25%",
                         display: "flex",
                         fontFamily: "Helvetica-Bold",
                       }}
@@ -490,7 +491,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                     <View
                       style={{
                         fontSize: "14px",
-                        height: "12.5%",
+                        height: "25%",
                         display: "flex",
                       }}
                     >
@@ -594,7 +595,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                     <View
                       style={{
                         fontSize: "14px",
-                        height: "12.5%",
+                        height: "25%",
                         display: "flex",
                       }}
                     >
@@ -698,7 +699,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                     <View
                       style={{
                         fontSize: "14px",
-                        height: "12.5%",
+                        height: "25%",
                         display: "flex",
                       }}
                     >
@@ -802,7 +803,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                     <View
                       style={{
                         fontSize: "14px",
-                        height: "12.5%",
+                        height: "25%",
                         display: "flex",
                       }}
                     >
@@ -824,7 +825,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                   alignContent: "center",
                   alignItems: "center",
                   justifyContent: "center",
-                  marginTop: "20px",
+                  marginTop: "10px",
                 }}
               >
                 <Text
