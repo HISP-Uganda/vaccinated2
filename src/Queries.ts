@@ -30,7 +30,7 @@ export const api = axios.create({
   baseURL: "https://services.dhis2.hispuganda.org/",
 });
 
-export function useInstance(tei: string, nin: string) {
+export function useInstance(tei: string) {
   return useQuery<any, Error>(["instance", tei], async () => {
     const { data } = await api.get(`certificates/validate/${tei}`);
     return data;

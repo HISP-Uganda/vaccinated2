@@ -63,6 +63,8 @@ const styles = StyleSheet.create({
 });
 
 export const MyDocument: FC<QR> = ({ data, certificate }) => {
+  const attributes =
+    data["DOSE1"] || data["DOSE2"] || data["BOOSTER1"] || data["BOOSTER2"];
   return (
     <Document>
       <Page size="A4" style={styles.body} orientation="landscape">
@@ -172,7 +174,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                         <Text
                           style={{ fontFamily: "Times-Italic", color: "red" }}
                         >
-                          {certificate}
+                          {attributes["certificate"]}
                         </Text>
                       </View>
                     </View>
@@ -195,7 +197,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                     }}
                   >
                     {" "}
-                    {data[NAME_ATTRIBUTE]} ({data.id}){" "}
+                    {attributes[NAME_ATTRIBUTE]} ({attributes["identifier"]}){" "}
                   </Text>
                   born on{" "}
                   <Text
@@ -206,7 +208,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                     }}
                   >
                     {" "}
-                    {new Date(data[DOB_ATTRIBUTE]).toDateString()}{" "}
+                    {new Date(attributes[DOB_ATTRIBUTE]).toDateString()}{" "}
                   </Text>{" "}
                   was{" "}
                   <Text
@@ -228,7 +230,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                       fontFamily: "Times-Italic",
                     }}
                   >
-                    (Card No. {data[VACCINATION_CARD_NO]})
+                    (Card No. {attributes[VACCINATION_CARD_NO]})
                   </Text>{" "}
                   as shown below
                 </Text>
@@ -423,7 +425,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                       >
                         {data["DOSE1"]
                           ? new Intl.DateTimeFormat("fr").format(
-                              Date.parse(data["DOSE1"].eventDate)
+                              Date.parse(data["DOSE1"].event_execution_date)
                             )
                           : ""}
                       </Text>
@@ -485,7 +487,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                           paddingLeft: "5px",
                         }}
                       >
-                        {data["DOSE1"]?.orgUnitName}
+                        {data["DOSE1"]?.name}
                       </Text>
                     </View>
                     <View
@@ -527,7 +529,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                       >
                         {data["DOSE2"]
                           ? new Intl.DateTimeFormat("fr").format(
-                              Date.parse(data["DOSE2"].eventDate)
+                              Date.parse(data["DOSE2"].event_execution_date)
                             )
                           : ""}
                       </Text>
@@ -589,7 +591,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                           paddingLeft: "5px",
                         }}
                       >
-                        {data["DOSE2"]?.orgUnitName}
+                        {data["DOSE2"]?.name}
                       </Text>
                     </View>
                     <View
@@ -631,7 +633,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                       >
                         {data["BOOSTER1"]
                           ? new Intl.DateTimeFormat("fr").format(
-                              Date.parse(data["BOOSTER1"].eventDate)
+                              Date.parse(data["BOOSTER1"].event_execution_date)
                             )
                           : ""}
                       </Text>
@@ -693,7 +695,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                           paddingLeft: "5px",
                         }}
                       >
-                        {data["BOOSTER1"]?.orgUnitName}
+                        {data["BOOSTER1"]?.name}
                       </Text>
                     </View>
                     <View
@@ -735,7 +737,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                       >
                         {data["BOOSTER2"]
                           ? new Intl.DateTimeFormat("fr").format(
-                              Date.parse(data["BOOSTER2"].eventDate)
+                              Date.parse(data["BOOSTER2"].event_execution_date)
                             )
                           : ""}
                       </Text>
@@ -797,7 +799,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                           paddingLeft: "5px",
                         }}
                       >
-                        {data["BOOSTER2"]?.orgUnitName}
+                        {data["BOOSTER2"]?.name}
                       </Text>
                     </View>
                     <View
