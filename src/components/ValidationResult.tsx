@@ -1,15 +1,8 @@
-import React from "react";
-import { Box, Flex, Text } from "@chakra-ui/layout";
-import { useParams } from "react-router-dom";
-import {
-  useInstance,
-  VACCINATION_CARD_NO,
-  NAME_ATTRIBUTE,
-  OTHER_ID,
-  NIN_ATTRIBUTE,
-  DOB_ATTRIBUTE,
-} from "../Queries";
+import { Flex, Text } from "@chakra-ui/layout";
 import { SimpleGrid } from "@chakra-ui/react";
+import {
+  DOB_ATTRIBUTE, NAME_ATTRIBUTE, NIN_ATTRIBUTE, OTHER_ID, VACCINATION_CARD_NO
+} from "../Queries";
 
 type ValidationResultProps = {
   data: any;
