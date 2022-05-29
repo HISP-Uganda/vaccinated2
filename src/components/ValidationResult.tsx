@@ -65,7 +65,7 @@ const ValidationResult = ({ data }: ValidationResultProps) => {
             <SimpleGrid columns={[1, 1, 2]} spacing="10">
               {!!data.DOSE1 && (
                 <Flex direction="column" border="1px solid gray" p="5px">
-                  <Text bg="gray.200">Dose1</Text>
+                  <Text bg="gray.200">DOSE1</Text>
                   <Flex
                     justifyContent="space-between"
                     direction={["column", "column", "row"]}
@@ -124,7 +124,7 @@ const ValidationResult = ({ data }: ValidationResultProps) => {
               )}
               {!!data.DOSE2 && (
                 <Flex direction="column" border="1px solid gray" p="5px">
-                  <Text bg="gray.200">Dose2</Text>
+                  <Text bg="gray.200">DOSE2</Text>
                   <Flex
                     justifyContent="space-between"
                     direction={["column", "column", "row"]}
@@ -184,7 +184,7 @@ const ValidationResult = ({ data }: ValidationResultProps) => {
 
               {!!data.BOOSTER1 && (
                 <Flex direction="column" border="1px solid gray" p="5px">
-                  <Text bg="gray.200">Booster 1</Text>
+                  <Text bg="gray.200">BOOSTER1</Text>
                   <Flex
                     justifyContent="space-between"
                     direction={["column", "column", "row"]}
@@ -243,7 +243,7 @@ const ValidationResult = ({ data }: ValidationResultProps) => {
               )}
               {!!data.BOOSTER2 && (
                 <Flex direction="column" border="1px solid gray" p="5px">
-                  <Text bg="gray.200">Booster 2</Text>
+                  <Text bg="gray.200">BOOSTER2</Text>
                   <Flex
                     justifyContent="space-between"
                     direction={["column", "column", "row"]}
@@ -306,7 +306,8 @@ const ValidationResult = ({ data }: ValidationResultProps) => {
       ) : (
         <Text color="red">
           Your vaccination certificate may not be valid, we could not find any
-          records matching your details
+          records matching your details. Try to regenerate your vaccination
+          certificate
         </Text>
       )}
     </Flex>
