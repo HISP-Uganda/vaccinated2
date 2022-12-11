@@ -6,6 +6,7 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
+  Image,
   Input,
   SimpleGrid,
   Spacer,
@@ -111,7 +112,36 @@ const Certificates: FC<TerminologyProps> = () => {
             justifyItems="center"
             align="center"
           >
-            {isMobile ? (
+            <PDFDownloadLink
+              document={
+                <MyDocument
+                  data={data}
+                  certificate={data.certificate}
+                  doses={data.doses}
+                />
+              }
+              fileName={
+                params.get("identifier") || "Vaccination-Certificate.pdf"
+              }
+            >
+              {({ blob, url, loading, error }) =>
+                loading ? (
+                  <Text>Generating certificate...</Text>
+                ) : (
+                  <Stack>
+                    <Image src={data.qr} alt="QR Code" />
+                    <Text
+                      fontSize="2xl"
+                      color="blue"
+                      _hover={{ textDecoration: "underline" }}
+                    >
+                      Click to Download Certificate
+                    </Text>
+                  </Stack>
+                )
+              }
+            </PDFDownloadLink>
+            {/* {isMobile ? (
               <PDFDownloadLink
                 document={
                   <MyDocument
@@ -128,13 +158,16 @@ const Certificates: FC<TerminologyProps> = () => {
                   loading ? (
                     <Text>Generating certificate...</Text>
                   ) : (
-                    <Text
-                      fontSize="2xl"
-                      color="blue"
-                      _hover={{ textDecoration: "underline" }}
-                    >
-                      Click to Download Certificate
-                    </Text>
+                    <Stack>
+                      <Image src={data.qr} alt="QR Code" />
+                      <Text
+                        fontSize="2xl"
+                        color="blue"
+                        _hover={{ textDecoration: "underline" }}
+                      >
+                        Click to Download Certificate
+                      </Text>
+                    </Stack>
                   )
                 }
               </PDFDownloadLink>
@@ -146,7 +179,7 @@ const Certificates: FC<TerminologyProps> = () => {
                   doses={data.doses}
                 />
               </PDFViewer>
-            )}
+            )} */}
           </Stack>
         </Flex>
       )}
