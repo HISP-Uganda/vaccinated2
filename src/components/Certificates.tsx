@@ -1,13 +1,13 @@
 import {
   Box,
   Button,
-  CircularProgress,
   Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Image,
   Input,
+  Progress,
   SimpleGrid,
   Spacer,
   Stack,
@@ -87,15 +87,12 @@ const Certificates: FC<TerminologyProps> = () => {
       justifyContent="center"
       justifyItems="center"
       h="100%"
+      flex={1}
     >
-      {isLoading && (
-        <Box fontSize="4xl">
-          <CircularProgress isIndeterminate color="blue.700" />
-        </Box>
-      )}
+      {isLoading && <Progress isIndeterminate color="blue.700" />}
       {isSuccess && data.eligible && (
         <Flex direction="column" width="100%" height="100%">
-          <Stack direction="row" my="10px">
+          <Stack direction="row" my="10px" alignItems="center">
             <Button onClick={() => history.push("/")}>Back</Button>
             <Spacer />
             <UpdateDetails
