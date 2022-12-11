@@ -6,16 +6,16 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Spacer,
   Input,
   SimpleGrid,
+  Spacer,
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { PDFViewer, PDFDownloadLink } from "@react-pdf/renderer";
-import { isMobile } from "react-device-detect";
+import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { Field, Form, Formik } from "formik";
 import { FC, useCallback, useState } from "react";
+import { isMobile } from "react-device-detect";
 import { useDropzone } from "react-dropzone";
 import { useMutation } from "react-query";
 import { useHistory, useLocation } from "react-router";
@@ -102,34 +102,52 @@ const Certificates: FC<TerminologyProps> = () => {
               phone={params.get("phone")}
             />
           </Stack>
-          {isMobile ? (
-            <PDFDownloadLink
-              document={
+          <Stack
+            flex={1}
+            h="100%"
+            alignItems="center"
+            justifyContent="center"
+            alignContent="center"
+            justifyItems="center"
+            align="center"
+          >
+            {isMobile ? (
+              <PDFDownloadLink
+                document={
+                  <MyDocument
+                    data={data}
+                    certificate={data.certificate}
+                    doses={data.doses}
+                  />
+                }
+                fileName={
+                  params.get("identifier") || "Vaccination-Certificate.pdf"
+                }
+              >
+                {({ blob, url, loading, error }) =>
+                  loading ? (
+                    <Text>Generating certificate...</Text>
+                  ) : (
+                    <Text
+                      fontSize="2xl"
+                      color="blue"
+                      _hover={{ textDecoration: "underline" }}
+                    >
+                      Click to Download Certificate
+                    </Text>
+                  )
+                }
+              </PDFDownloadLink>
+            ) : (
+              <PDFViewer width="100%" height="100%" style={{ flex: 1 }}>
                 <MyDocument
                   data={data}
                   certificate={data.certificate}
                   doses={data.doses}
                 />
-              }
-              fileName={
-                params.get("identifier") || "Vaccination-Certificate.pdf"
-              }
-            >
-              {({ blob, url, loading, error }) =>
-                loading
-                  ? "Generating certificate..."
-                  : "Click to Download Certificate!"
-              }
-            </PDFDownloadLink>
-          ) : (
-            <PDFViewer width="100%" height="100%" style={{ flex: 1 }}>
-              <MyDocument
-                data={data}
-                certificate={data.certificate}
-                doses={data.doses}
-              />
-            </PDFViewer>
-          )}
+              </PDFViewer>
+            )}
+          </Stack>
         </Flex>
       )}
       {isSuccess && !data.eligible && (
