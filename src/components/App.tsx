@@ -3,25 +3,35 @@ import {
   HashRouter as Router,
   Route,
   Switch,
-  Link as Linker
+  Link as Linker,
 } from "react-router-dom";
-import mohImage from '../moh.png';
-import Certificates from './Certificates';
+import mohImage from "../moh.png";
+import Certificates from "./Certificates";
 import Home from "./Home";
 import Validate from "./Validate";
-import Contact from './Contact';
+import Contact from "./Contact";
 import UpdateDetails from "./UpdateDetails";
 
 const App = () => (
   <Router>
-    <Flex w="100vw" h="100vh" direction="column">
+    <Flex w="100vw" h="100vh" direction="column" maxH="100vh" maxW="100vw">
       <Link as={Linker} to="/" _hover={{ border: "none" }}>
-        <Stack px={[1, 1, 20]} direction="row" bg="blue.800" py={1} alignContent="center" alignItems="center" textColor="white" fontSize={['md', 'md', '4xl']} spacing="30px">
+        <Stack
+          px={[1, 1, 20]}
+          direction="row"
+          bg="blue.800"
+          py={1}
+          alignContent="center"
+          alignItems="center"
+          textColor="white"
+          fontSize={["md", "md", "4xl"]}
+          spacing="30px"
+        >
           <Image src={mohImage} alt="Ministry of Health" boxSize="65px" />
           <Box fontWeight="bold">Ministry of Health Uganda</Box>
         </Stack>
       </Link>
-      <Box px={[1, 1, 20]} flex={1} height="500px" overflow="auto">
+      <Box px={[1, 1, 20]} flex={1}>
         <Switch>
           <Route path="/validate/:tei" exact>
             <Validate />
@@ -40,8 +50,26 @@ const App = () => (
           </Route>
         </Switch>
       </Box>
-      <Flex mt="5" bg="gray.100" justifyContent="space-between" alignContent="center" alignItems="center" justifyItems="center" p={5} direction={["column", "column", "row"]}>
-        <Box textAlign={["center", "center", null]}>© {new Date().getFullYear()} Copyright: Ministry of Health Uganda - COVID-19 Response Team</Box><Box>Designed by <Link color="teal.500" href="https://hispuganda.org/">HISP Uganda </Link></Box>
+      <Flex
+        mt="5"
+        bg="gray.100"
+        justifyContent="space-between"
+        alignContent="center"
+        alignItems="center"
+        justifyItems="center"
+        p={5}
+        direction={["column", "column", "row"]}
+      >
+        <Box textAlign={["center", "center", null]}>
+          © {new Date().getFullYear()} Copyright: Ministry of Health Uganda -
+          COVID-19 Response Team
+        </Box>
+        <Box>
+          Designed by
+          <Link color="teal.500" href="https://hispuganda.org/">
+            HISP Uganda
+          </Link>
+        </Box>
       </Flex>
     </Flex>
   </Router>
