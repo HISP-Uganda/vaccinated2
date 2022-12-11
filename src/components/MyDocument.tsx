@@ -196,9 +196,10 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                       fontFamily: "Helvetica-Bold",
                     }}
                   >
-                    {attributes[NAME_ATTRIBUTE]} ({attributes["identifier"]})
+                    {" "}
+                    {attributes[NAME_ATTRIBUTE]} ({attributes["identifier"]}){" "}
                   </Text>
-                  born on
+                  born on{" "}
                   <Text
                     style={{
                       fontWeight: "black",
@@ -206,9 +207,10 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                       fontFamily: "Helvetica-Bold",
                     }}
                   >
-                    {new Date(attributes[DOB_ATTRIBUTE]).toDateString()}
-                  </Text>
-                  was
+                    {" "}
+                    {new Date(attributes[DOB_ATTRIBUTE]).toDateString()}{" "}
+                  </Text>{" "}
+                  was{" "}
                   <Text
                     style={{
                       fontWeight: "black",
@@ -217,9 +219,10 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                       fontFamily: "Helvetica-Bold",
                     }}
                   >
+                    {" "}
                     {data.type} vaccinated
-                  </Text>
-                  against COVID-19
+                  </Text>{" "}
+                  against COVID-19{" "}
                   <Text
                     style={{
                       fontSize: "16px",
@@ -228,7 +231,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                     }}
                   >
                     (Card No. {attributes[VACCINATION_CARD_NO]})
-                  </Text>
+                  </Text>{" "}
                   as shown below
                 </Text>
               </View>
@@ -848,7 +851,7 @@ export const MyDocument: FC<QR> = ({ data, certificate }) => {
                 <Text style={{ width: "20%" }}></Text>
                 <Text style={{ flex: 1, width: "60%" }}>
                   tel. +256-417-712-221 | email. ps@health.go.ug | website.
-                  www.health.go.ug
+                  www.health.go.ug{" "}
                 </Text>
                 <Text style={{ width: "20%", color: "#CBD5E0" }}>
                   Version: COVICERT-003
