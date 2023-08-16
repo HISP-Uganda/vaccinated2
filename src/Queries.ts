@@ -26,60 +26,65 @@ export const ELSEWHERE_MAN = "taGJD9hkX0s";
 export const ELSEWHERE_BATCH = "muCgXjnCfnS";
 
 export const api = axios.create({
-  // baseURL: "http://localhost:3001/",
-  baseURL: "https://services.dhis2.hispuganda.org/",
+    // baseURL: "http://localhost:3001/",
+    baseURL: "https://vericert.epivac.health.go.ug/",
 });
 
 export function useInstance(tei: string) {
-  return useQuery<any, Error>(["instance", tei], async () => {
-    const { data } = await api.get(`certificates/validate/${tei}`);
-    return data;
-  });
+    return useQuery<any, Error>(["instance", tei], async () => {
+        const { data } = await api.get(`certificates/validate/${tei}`);
+        return data;
+    });
 }
 
 export async function getDistricts(units: string[]) {
-  const params = {
-    includeAncestors: true,
-    fields: "id,name,level",
-  };
-  const records: any[] = await Promise.all(
-    units.map((id: string) =>
-      api.get(`dhis2`, {
-        params: { ...params, url: `organisationUnits/${id}` },
-      })
-    )
-  );
-  const processed = records.map(
-    ({ data: { organisationUnits } }: any, index: number) => {
-      const district = organisationUnits.find((unit: any) => unit.level === 3);
-      return [units[index], district.name];
-    }
-  );
-  return fromPairs(processed);
+    const params = {
+        includeAncestors: true,
+        fields: "id,name,level",
+    };
+    const records: any[] = await Promise.all(
+        units.map((id: string) =>
+            api.get(`dhis2`, {
+                params: { ...params, url: `organisationUnits/${id}` },
+            })
+        )
+    );
+    const processed = records.map(
+        ({ data: { organisationUnits } }: any, index: number) => {
+            const district = organisationUnits.find(
+                (unit: any) => unit.level === 3
+            );
+            return [units[index], district.name];
+        }
+    );
+    return fromPairs(processed);
 }
 
 export async function sendEmail(data: any) {
-  await api.post("feedbacks", data);
-  return true;
+    await api.post("feedbacks", data);
+    return true;
 }
 
 export async function updateBirthDay(details: any) {
-  const { data } = await api.post("certificates/update-birth", details);
-  console.log(data);
-  return data;
+    const { data } = await api.post("certificates/update-birth", details);
+    console.log(data);
+    return data;
 }
 
 export function useTracker(identifier: string | null, phone: string | null) {
-  return useQuery<any, Error>(["certificate", identifier, phone], async () => {
-    const { data } = await api.get("certificates", {
-      params: { identifier, phone },
-    });
-    return data;
-  });
+    return useQuery<any, Error>(
+        ["certificate", identifier, phone],
+        async () => {
+            const { data } = await api.get("certificates", {
+                params: { identifier, phone },
+            });
+            return data;
+        }
+    );
 }
 
 export function useFeedbacks(page: number, pageSize: number) {
-  return useQuery<any, Error>(["feedbacks", page, pageSize], async () => {
-    return await api.get("feedbacks", { params: { page, pageSize } });
-  });
+    return useQuery<any, Error>(["feedbacks", page, pageSize], async () => {
+        return await api.get("feedbacks", { params: { page, pageSize } });
+    });
 }
